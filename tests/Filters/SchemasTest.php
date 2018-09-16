@@ -16,6 +16,5 @@ class SchemasTest extends BaseTest
     {
         $schema = $this->getMapper()->getSchema(TestFilter::class);
         $this->assertNotEmpty($schema);
-        dumP($schema);
     }
 }
