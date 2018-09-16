@@ -112,7 +112,7 @@ class Filter extends SchematicEntity implements FilterInterface
     public function getErrors(): array
     {
         if ($this->mappedErrors !== null && $this->errors !== null) {
-            return $this->mappedErrors;
+            return $this->validateNested($this->mappedErrors);
         }
 
         //Making sure that each error point to proper input origin
