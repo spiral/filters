@@ -6,9 +6,9 @@
  * @author    Anton Titov (Wolfy-J)
  */
 
-namespace Spiral\Filters\Schemas;
+namespace Spiral\Filters\Exceptions;
 
-class SchemaParser
+class SchemaException extends FilterException
 {
-    
+
 }
