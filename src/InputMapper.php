@@ -12,7 +12,6 @@ use Spiral\Core\Container\SingletonInterface;
 use Spiral\Core\MemoryInterface;
 use Spiral\Filters\Exceptions\MapperException;
 use Spiral\Filters\Exceptions\SchemaException;
-use Spiral\Filters\Schemas\SchemaBuilder;
 use Spiral\Validation\ValidationInterface;
 use Spiral\Validation\ValidatorInterface;
 
@@ -20,12 +19,13 @@ class InputMapper implements MapperInterface, SingletonInterface
 {
     protected const MEMORY = 'filters';
 
-    public const SH_RULES   = 0;
-    public const SH_MAP     = 1;
-    public const MAP_ORIGIN = 0;
-    public const MAP_NESTED = 2;
-    public const MAP_SOURCE = 3;
-    public const MAP_ARRAY  = 6;
+    // Packed schema definitions
+    public const MAP_ORIGIN         = 0;
+    public const MAP_NESTED         = 2;
+    public const MAP_SOURCE         = 3;
+    public const MAP_ARRAY          = 6;
+    public const MAP_ITERATE_SOURCE = 0;
+    public const MAP_ITERATE_ORIGIN = 0;
 
     /** @var MemoryInterface */
     private $memory;
@@ -61,7 +61,7 @@ class InputMapper implements MapperInterface, SingletonInterface
      */
     public function initValues(FilterInterface $filter, InputInterface $input)
     {
-        foreach ($this->getSchema($filter)[self::SH_MAP] as $field => $map) {
+        foreach ($this->getSchema($filter)[Filter::SH_MAP] as $field => $map) {
             if (empty($map[self::MAP_NESTED])) {
                 $filter->setField(
                     $field,
@@ -81,7 +81,7 @@ class InputMapper implements MapperInterface, SingletonInterface
             }
 
             // List of "key" => "location in request"
-            foreach ($this->createOrigins($input, $field, $map) as $index => $origin) {
+            foreach ($this->iterate($input, $map) as $index => $origin) {
                 // slicing as array
                 $filter->setField($field, new $nested($input->withPrefix($origin), $this));
             }
@@ -93,7 +93,7 @@ class InputMapper implements MapperInterface, SingletonInterface
      */
     public function mapErrors(FilterInterface $filter, array $errors): array
     {
-        $map = $this->getSchema($filter)[self::SH_MAP];
+        $map = $this->getSchema($filter)[Filter::SH_MAP];
 
         //De-mapping
         $mapped = [];
@@ -116,7 +116,7 @@ class InputMapper implements MapperInterface, SingletonInterface
     {
         return $this->validation->validate(
             $filter,
-            $this->getSchema($filter)[self::SH_RULES],
+            $this->getSchema($filter)[Filter::SH_VALIDATES],
             $context
         );
     }
@@ -176,6 +176,15 @@ class InputMapper implements MapperInterface, SingletonInterface
     }
 
     /**
+     * Reset filters schema.
+     */
+    public function resetSchema()
+    {
+        $this->schema = [];
+        $this->memory->saveData(self::MEMORY, []);
+    }
+
+    /**
      * Load packed schema from memory.
      *
      * @return array
@@ -214,25 +223,19 @@ class InputMapper implements MapperInterface, SingletonInterface
      * Create set of origins and prefixed for a nested array of models.
      *
      * @param InputInterface $input
-     * @param string         $field
      * @param array          $map
      *
-     * @return array
+     * @return \Generator
      */
-    private function createOrigins(InputInterface $input, string $field, array $map)
+    private function iterate(InputInterface $input, array $map): \Generator
     {
-        // todo: improve using static schemas
-
-        $result = [];
-        list($source, $origin) = $this->parseDefinition($field, $iterate);
-        $iteration = $input->getValue($source, $origin);
-        if (empty($iteration) || !is_array($iteration)) {
+        $values = $input->getValue($map[self::MAP_ITERATE_SOURCE], $map[self::MAP_ITERATE_ORIGIN]);
+        if (empty($values) || !is_array($values)) {
             return [];
         }
-        foreach (array_keys($iteration) as $key) {
-            $result[$key] = $prefix . '.' . $key;
-        }
 
-        return $result;
+        foreach (array_keys($values) as $key) {
+            yield $key => $map[self::MAP_ORIGIN] . '.' . $key;
+        }
     }
 }

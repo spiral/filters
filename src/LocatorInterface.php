@@ -13,8 +13,7 @@ use Spiral\Models\Reflections\ReflectionEntity;
 interface LocatorInterface
 {
     /**
-     * @return ReflectionEntity[]
+     * @return \Generator|ReflectionEntity[]
      */
-    public function locateFilters(): array;
-
+    public function locateFilters(): \Generator;
 }
