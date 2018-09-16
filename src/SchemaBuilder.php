@@ -119,7 +119,7 @@ class SchemaBuilder
             if (!empty($definition[self::ORIGIN])) {
                 $origin = $definition[self::ORIGIN];
 
-                //[class, 'data:something.*']
+                // [class, 'data:something.*'] vs [class, 'data:something']
                 $iterate = strpos($origin, '.*') !== false;
                 $origin = rtrim($origin, '.*');
             } else {
