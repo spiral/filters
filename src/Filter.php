@@ -58,12 +58,15 @@ class Filter extends SchematicEntity implements FilterInterface
         getErrors as fetchErrors;
     }
 
+    // Default input source when nothing else is specified.
+    public const DEFAULT_SOURCE = 'data';
+
     // Filter specific schema segments
     public const SH_MAP       = 0;
     public const SH_VALIDATES = 1;
 
     // Defines request data mapping (input => request property)
-    const SCHEMA = [];
+    public const SCHEMA = [];
 
     /** @var MapperInterface */
     private $mapper;

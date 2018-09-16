@@ -20,12 +20,12 @@ class InputMapper implements MapperInterface, SingletonInterface
     protected const MEMORY = 'filters';
 
     // Packed schema definitions
-    public const MAP_ORIGIN         = 0;
-    public const MAP_NESTED         = 2;
-    public const MAP_SOURCE         = 3;
-    public const MAP_ARRAY          = 6;
-    public const MAP_ITERATE_SOURCE = 0;
-    public const MAP_ITERATE_ORIGIN = 0;
+    public const SOURCE         = 0;
+    public const ORIGIN         = 1;
+    public const FILTER         = 2;
+    public const ARRAY          = 3;
+    public const ITERATE_SOURCE = 4;
+    public const ITERATE_ORIGIN = 5;
 
     /** @var MemoryInterface */
     private $memory;
@@ -62,20 +62,20 @@ class InputMapper implements MapperInterface, SingletonInterface
     public function initValues(FilterInterface $filter, InputInterface $input)
     {
         foreach ($this->getSchema($filter)[Filter::SH_MAP] as $field => $map) {
-            if (empty($map[self::MAP_NESTED])) {
+            if (empty($map[self::FILTER])) {
                 $filter->setField(
                     $field,
-                    $input->getValue($map[self::MAP_SOURCE], $map[self::MAP_ORIGIN])
+                    $input->getValue($map[self::SOURCE], $map[self::ORIGIN])
                 );
                 continue;
             }
 
-            $nested = $map[self::MAP_NESTED];
-            if (empty($map[self::MAP_ARRAY])) {
+            $nested = $map[self::FILTER];
+            if (empty($map[self::ARRAY])) {
                 // slicing down
                 $filter->setField(
                     $field,
-                    new $nested($input->withPrefix($map[self::MAP_ORIGIN]), $this)
+                    new $nested($input->withPrefix($map[self::ORIGIN]), $this)
                 );
                 continue;
             }
@@ -103,7 +103,7 @@ class InputMapper implements MapperInterface, SingletonInterface
                 continue;
             }
 
-            $this->mount($mapped, $map[$field][self::MAP_ORIGIN], $message);
+            $this->mount($mapped, $map[$field][self::ORIGIN], $message);
         }
 
         return $mapped;
@@ -229,13 +229,13 @@ class InputMapper implements MapperInterface, SingletonInterface
      */
     private function iterate(InputInterface $input, array $map): \Generator
     {
-        $values = $input->getValue($map[self::MAP_ITERATE_SOURCE], $map[self::MAP_ITERATE_ORIGIN]);
+        $values = $input->getValue($map[self::ITERATE_SOURCE], $map[self::ITERATE_ORIGIN]);
         if (empty($values) || !is_array($values)) {
             return [];
         }
 
         foreach (array_keys($values) as $key) {
-            yield $key => $map[self::MAP_ORIGIN] . '.' . $key;
+            yield $key => $map[self::ORIGIN] . '.' . $key;
         }
     }
 }
