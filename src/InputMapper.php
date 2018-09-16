@@ -80,7 +80,8 @@ class InputMapper implements MapperInterface, SingletonInterface
                 continue;
             }
 
-            foreach ($map[self::MAP_ORIGIN] as $index => $origin) {
+            // List of "key" => "location in request"
+            foreach ($this->createOrigins($input, $field, $map) as $index => $origin) {
                 // slicing as array
                 $filter->setField($field, new $nested($input->withPrefix($origin), $this));
             }
@@ -207,5 +208,31 @@ class InputMapper implements MapperInterface, SingletonInterface
         }
 
         $array = $message;
+    }
+
+    /**
+     * Create set of origins and prefixed for a nested array of models.
+     *
+     * @param InputInterface $input
+     * @param string         $field
+     * @param array          $map
+     *
+     * @return array
+     */
+    private function createOrigins(InputInterface $input, string $field, array $map)
+    {
+        // todo: improve using static schemas
+
+        $result = [];
+        list($source, $origin) = $this->parseDefinition($field, $iterate);
+        $iteration = $input->getValue($source, $origin);
+        if (empty($iteration) || !is_array($iteration)) {
+            return [];
+        }
+        foreach (array_keys($iteration) as $key) {
+            $result[$key] = $prefix . '.' . $key;
+        }
+
+        return $result;
     }
 }
