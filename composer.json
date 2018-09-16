@@ -1,7 +1,7 @@
 {
   "name": "spiral/filters",
   "type": "library",
-  "description": "Nested Structure Validation, Data Mappers",
+  "description": "Nested Structure Validation, Data Mapper, Inheritance",
   "license": "MIT",
   "authors": [
     {
