@@ -9,7 +9,6 @@
 namespace Spiral\Filters;
 
 use Spiral\Core\Traits\SaturateTrait;
-use Spiral\Filters\Exceptions\InputException;
 use Spiral\Filters\Traits\ValidateTrait;
 use Spiral\Models\SchematicEntity;
 use Spiral\Validation\ValidatorInterface;
@@ -101,11 +100,9 @@ class Filter extends SchematicEntity implements FilterInterface
     }
 
     /**
-     * {@inheritdoc}
+     * Get all validation messages (including nested models).
      *
-     * Map errors to their original location.
-     *
-     * @throws InputException When entity has non proper configuration.
+     * @return array
      */
     public function getErrors(): array
     {
