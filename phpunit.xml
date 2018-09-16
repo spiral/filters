@@ -13,7 +13,7 @@
 >
 
     <testsuites>
-        <testsuite name="Filter Chains, Nested Validation, Data Mapping">
+        <testsuite name="Filter Chains, Nested Validation, Data Mappers">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>

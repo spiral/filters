@@ -1,7 +1,7 @@
 {
   "name": "spiral/filters",
   "type": "library",
-  "description": "Filter Chains, Nested Validation, Data Mapping",
+  "description": "Filter Chains, Nested Validation, Data Mappers",
   "license": "MIT",
   "authors": [
     {
