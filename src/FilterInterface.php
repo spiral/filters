@@ -35,6 +35,4 @@ interface FilterInterface extends EntityInterface
      * @return mixed
      */
     public function getContext();
-
-
 }
