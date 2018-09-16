@@ -8,9 +8,15 @@
 
 namespace Spiral\Filters\Tests\Fixtures;
 
-class TestFilter extends AbstractFilter
+use Spiral\Filters\Filter;
+
+abstract class AbstractFilter extends Filter
 {
     const SCHEMA = [
-        'key' => 'value'
+        'id' => 'query:id'
+    ];
+
+    const VALIDATES = [
+        'id' => ['notEmpty']
     ];
 }

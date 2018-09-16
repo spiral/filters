@@ -66,7 +66,8 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     public const SH_VALIDATES = 1;
 
     // Defines request data mapping (input => request property)
-    public const SCHEMA = [];
+    public const SCHEMA    = [];
+    public const VALIDATES = [];
 
     /** @var MapperInterface */
     private $mapper;
