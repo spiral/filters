@@ -12,7 +12,7 @@ use Spiral\Validation\ValidatorInterface;
 
 interface MapperInterface
 {
-    public function fillValues(FilterInterface $filter, InputInterface $input): array;
+    public function initValues(FilterInterface $filter, InputInterface $input): array;
 
     public function mapErrors(FilterInterface $filter, array $errors): array;
 

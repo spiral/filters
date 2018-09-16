@@ -78,7 +78,7 @@ class Filter extends SchematicEntity implements FilterInterface
         parent::__construct([], $mapper->getSchema($this));
 
         if (!empty($input)) {
-            $this->mapper->fillValues($this, $input);
+            $this->mapper->initValues($this, $input);
         }
     }
 
