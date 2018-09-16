@@ -13,7 +13,7 @@
 >
 
     <testsuites>
-        <testsuite name="Nested Structure Validation, Data Mappers">
+        <testsuite name="Deep Structural Validation, Data Mapper, Inheritance">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>

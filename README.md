@@ -1,4 +1,4 @@
-Nested Structure Validation, Data Mapper, Inheritance
+Deep Structural Validation, Data Mapper, Inheritance
 ================================
 [![Latest Stable Version](https://poser.pugx.org/spiral/filters/version)](https://packagist.org/packages/spiral/filters)
 [![Build Status](https://travis-ci.org/spiral/filters.svg?branch=master)](https://travis-ci.org/spiral/filters)
