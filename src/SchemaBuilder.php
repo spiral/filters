@@ -58,11 +58,11 @@ class SchemaBuilder
         $schema = [];
         foreach ($this->filters as $filter) {
             $schema[$filter->getName()] = [
-                Filter::SH_MAP      => $this->buildMap($filter),
-                Filter::SH_SECURED  => $filter->getProperty('validates', true),
-                Filter::SH_SECURED  => $filter->getSecured(),
-                Filter::SH_FILLABLE => $filter->getFillable(),
-                Filter::SH_MUTATORS => $filter->getMutators(),
+                Filter::SH_MAP       => $this->buildMap($filter),
+                Filter::SH_VALIDATES => $filter->getProperty('validates', true) ?? [],
+                Filter::SH_SECURED   => $filter->getSecured(),
+                Filter::SH_FILLABLE  => $filter->getFillable(),
+                Filter::SH_MUTATORS  => $filter->getMutators(),
             ];
         }
 
