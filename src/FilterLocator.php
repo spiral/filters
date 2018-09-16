@@ -11,7 +11,7 @@ namespace Spiral\Filters;
 use Spiral\Models\Reflections\ReflectionEntity;
 use Spiral\Tokenizer\ClassesInterface;
 
-class FilterLocator implements LocatorInterface
+final class FilterLocator implements LocatorInterface
 {
     /** @var ClassesInterface */
     private $classes;

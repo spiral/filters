@@ -15,7 +15,7 @@ use Spiral\Filters\Exceptions\SchemaException;
 use Spiral\Validation\ValidationInterface;
 use Spiral\Validation\ValidatorInterface;
 
-class InputMapper implements MapperInterface, SingletonInterface
+final class InputMapper implements MapperInterface, SingletonInterface
 {
     protected const MEMORY = 'filters';
 
