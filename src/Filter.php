@@ -88,8 +88,7 @@ class Filter extends SchematicEntity implements FilterInterface
     public function setField(string $name, $value, bool $filter = true)
     {
         $this->errors = null;
-
-        return parent::setField($name, $value, $filter);
+        parent::setField($name, $value, $filter);
     }
 
     /**
@@ -98,7 +97,6 @@ class Filter extends SchematicEntity implements FilterInterface
     public function __unset($offset)
     {
         $this->errors = null;
-
         parent::__unset($offset);
     }
 
