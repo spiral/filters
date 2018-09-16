@@ -6,17 +6,18 @@
  * @author    Anton Titov (Wolfy-J)
  */
 
-namespace Spiral\Core\Bootloaders;
+namespace Spiral\Filters\Bootloaders;
 
+use Spiral\Core\Bootloaders\Bootloader;
 use Spiral\Filters\FilterLocator;
-use Spiral\Filters\InputMapper;
+use Spiral\Filters\FilterMapper;
 use Spiral\Filters\LocatorInterface;
 use Spiral\Filters\MapperInterface;
 
 class FiltersBootloader extends Bootloader
 {
     const SINGLETONS = [
-        MapperInterface::class  => InputMapper::class,
+        MapperInterface::class  => FilterMapper::class,
         LocatorInterface::class => FilterLocator::class
     ];
 }

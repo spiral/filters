@@ -15,7 +15,7 @@ use Spiral\Filters\Exceptions\SchemaException;
 use Spiral\Validation\ValidationInterface;
 use Spiral\Validation\ValidatorInterface;
 
-final class InputMapper implements MapperInterface, SingletonInterface
+final class FilterMapper implements MapperInterface, SingletonInterface
 {
     protected const MEMORY = 'filters';
 
@@ -61,7 +61,7 @@ final class InputMapper implements MapperInterface, SingletonInterface
      */
     public function initValues(FilterInterface $filter, InputInterface $input)
     {
-        foreach ($this->getSchema($filter)[Filter::SH_MAP] as $field => $map) {
+        foreach ($this->getSchema(get_class($filter))[Filter::SH_MAP] as $field => $map) {
             if (empty($map[self::FILTER])) {
                 $filter->setField(
                     $field,
@@ -93,7 +93,7 @@ final class InputMapper implements MapperInterface, SingletonInterface
      */
     public function mapErrors(FilterInterface $filter, array $errors): array
     {
-        $map = $this->getSchema($filter)[Filter::SH_MAP];
+        $map = $this->getSchema(get_class($filter))[Filter::SH_MAP];
 
         //De-mapping
         $mapped = [];
@@ -116,7 +116,7 @@ final class InputMapper implements MapperInterface, SingletonInterface
     {
         return $this->validation->validate(
             $filter,
-            $this->getSchema($filter)[Filter::SH_VALIDATES],
+            $this->getSchema(get_class($filter))[Filter::SH_VALIDATES],
             $context
         );
     }
@@ -124,20 +124,19 @@ final class InputMapper implements MapperInterface, SingletonInterface
     /**
      * @inheritdoc
      */
-    public function getSchema(FilterInterface $filter): array
+    public function getSchema(string $filter): array
     {
         if (empty($this->schema)) {
-            $this->setSchema($this->buildSchema(), true);
+            $this->setSchema($this->buildSchema($this->locator), true);
         }
 
-        if (!isset($this->schema[get_class($filter)])) {
-            throw new SchemaException(sprintf(
-                "Undefined filter `%s`, make sure schema to update schema.",
-                get_class($filter)
-            ));
+        if (!isset($this->schema[$filter])) {
+            throw new SchemaException(
+                "Undefined filter `{$filter}`, make sure schema to update schema."
+            );
         }
 
-        return $this->schema[get_class($filter)];
+        return $this->schema[$filter];
     }
 
     /**

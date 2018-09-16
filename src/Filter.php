@@ -51,7 +51,7 @@ use Spiral\Validation\ValidatorInterface;
  * Available sources: uri, path, method, isSecure, isAjax, isJsonExpected, remoteAddress.
  * Plus named sources (bags): header, data, post, query, cookie, file, server, attribute.
  */
-class Filter extends SchematicEntity implements FilterInterface
+abstract class Filter extends SchematicEntity implements FilterInterface
 {
     use SaturateTrait;
     use ValidateTrait {
@@ -81,7 +81,7 @@ class Filter extends SchematicEntity implements FilterInterface
     public function __construct(InputInterface $input = null, MapperInterface $mapper = null)
     {
         $this->mapper = $this->saturate($mapper, MapperInterface::class);
-        parent::__construct([], $mapper->getSchema($this));
+        parent::__construct([], $mapper->getSchema(get_class($this)));
 
         if (!empty($input)) {
             $this->mapper->initValues($this, $input);

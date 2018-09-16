@@ -88,8 +88,8 @@ class SchemaBuilder
                 if (!class_exists($definition)) {
                     list($source, $origin) = $this->parseDefinition($filter, $field, $definition);
                     $result[$field] = [
-                        InputMapper::SOURCE => $source,
-                        InputMapper::ORIGIN => $origin
+                        FilterMapper::SOURCE => $source,
+                        FilterMapper::ORIGIN => $origin
                     ];
                     continue;
                 }
@@ -102,10 +102,10 @@ class SchemaBuilder
 
                 //Singular nested model
                 $result[$field] = [
-                    InputMapper::SOURCE => null,
-                    InputMapper::ORIGIN => $field,
-                    InputMapper::FILTER => $definition,
-                    InputMapper::ARRAY  => false
+                    FilterMapper::SOURCE => null,
+                    FilterMapper::ORIGIN => $field,
+                    FilterMapper::FILTER => $definition,
+                    FilterMapper::ARRAY  => false
                 ];
 
                 continue;
@@ -129,10 +129,10 @@ class SchemaBuilder
 
             //Array of models (default isolation prefix)
             $map = [
-                InputMapper::FILTER => $definition[self::NESTED],
-                InputMapper::SOURCE => null,
-                InputMapper::ORIGIN => $origin,
-                InputMapper::ARRAY  => $iterate
+                FilterMapper::FILTER => $definition[self::NESTED],
+                FilterMapper::SOURCE => null,
+                FilterMapper::ORIGIN => $origin,
+                FilterMapper::ARRAY  => $iterate
             ];
 
             if ($iterate) {
@@ -142,8 +142,8 @@ class SchemaBuilder
                     $definition[self::ITERATE] ?? $origin
                 );
 
-                $map[InputMapper::ITERATE_SOURCE] = $source;
-                $map[InputMapper::ITERATE_ORIGIN] = $origin;
+                $map[FilterMapper::ITERATE_SOURCE] = $source;
+                $map[FilterMapper::ITERATE_ORIGIN] = $origin;
             }
 
             $result[$field] = $map;

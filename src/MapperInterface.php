@@ -16,8 +16,7 @@ interface MapperInterface
 
     public function mapErrors(FilterInterface $filter, array $errors): array;
 
-
     public function validate(FilterInterface $filter, $context = null): ValidatorInterface;
 
-    public function getSchema(FilterInterface $filter): array;
+    public function getSchema(string $filter): array;
 }
