@@ -1,0 +1,32 @@
+{
+  "name": "spiral/filters",
+  "type": "library",
+  "description": "Filter Chains, Nested Validation, Data Mapping",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Anton Titov / Wolfy-J",
+      "email": "wolfy.jd@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.1",
+    "spiral/core": "^1.0",
+    "spiral/models": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "~7.0",
+    "mockery/mockery": "^1.1",
+    "zendframework/zend-diactoros": "^1.8"
+  },
+  "autoload": {
+    "psr-4": {
+      "Spiral\\Filters\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Spiral\\Filters\\Tests\\": "tests/Filters/"
+    }
+  }
+}
