@@ -14,8 +14,8 @@ use Spiral\Models\Reflections\ReflectionEntity;
 class SchemaBuilder
 {
     // Used to define multiple nested models.
-    protected const NESTED  = 0;
-    protected const ORIGIN  = 1;
+    protected const NESTED = 0;
+    protected const ORIGIN = 1;
     protected const ITERATE = 2;
 
     /** @var ReflectionEntity[] */
@@ -77,7 +77,7 @@ class SchemaBuilder
     {
         $schema = $filter->getProperty('schema', true);
         if (empty($schema)) {
-            throw new SchemaException("Filter `{$filter}` does not define any schema.");
+            throw new SchemaException("Filter `{$filter->getName()}` does not define any schema.");
         }
 
         $result = [];
@@ -112,7 +112,7 @@ class SchemaBuilder
             }
 
             if (!is_array($definition) || count($definition) == 0) {
-                throw new SchemaException("Invalid schema definition at `{$filter}`->`{$field}`.");
+                throw new SchemaException("Invalid schema definition at `{$filter->getName()}`->`{$field}`.");
             }
 
             //Complex definition

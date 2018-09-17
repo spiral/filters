@@ -12,6 +12,8 @@ use Spiral\Filters\SchemaBuilder;
 use Spiral\Filters\Tests\Fixtures\ExternalFilter;
 use Spiral\Filters\Tests\Fixtures\ParentFilter;
 use Spiral\Filters\Tests\Fixtures\TestFilter;
+use Spiral\Filters\Tests\UserDefined\BrokenFilter;
+use Spiral\Filters\Tests\UserDefined\EmptyFilter;
 use Spiral\Models\Reflections\ReflectionEntity;
 
 class SchemasTest extends BaseTest
@@ -82,5 +84,26 @@ class SchemasTest extends BaseTest
         $mapper->setSchema($builder, false);
         $schema = $mapper->getSchema(ExternalFilter::class);
         $this->assertNotEmpty($schema);
+    }
+
+    /**
+     * @expectedException \Spiral\Filters\Exceptions\SchemaException
+     */
+    public function testEmptySchema()
+    {
+        $builder = new SchemaBuilder();
+        $builder->register(new ReflectionEntity(EmptyFilter::class));
+        $builder->buildSchema();
+    }
+
+    /**
+     * @expectedException \Spiral\Filters\Exceptions\SchemaException
+     * @expectedExceptionMessageRegExp /id/
+     */
+    public function testBrokenFilter()
+    {
+        $builder = new SchemaBuilder();
+        $builder->register(new ReflectionEntity(BrokenFilter::class));
+        $builder->buildSchema();
     }
 }
