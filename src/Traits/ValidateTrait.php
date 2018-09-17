@@ -62,7 +62,7 @@ trait ValidateTrait
             unset($error);
         }
 
-        return $this->validateNested($errors);
+        return $errors;
     }
 
     /**
@@ -76,37 +76,4 @@ trait ValidateTrait
      * Force re-validation.
      */
     abstract public function reset();
-
-    /**
-     * Validate inner entities.
-     *
-     * @param array $errors
-     *
-     * @return array
-     */
-    private function validateNested(array $errors): array
-    {
-        foreach ($this->getFields(false) as $index => $value) {
-            if (isset($errors[$index])) {
-                //Invalid on parent level
-                continue;
-            }
-
-            if ($value instanceof FilterInterface && !$value->isValid()) {
-                $errors[$index] = $value->getErrors();
-                continue;
-            }
-
-            //Array of nested entities for validation
-            if (is_array($value) || $value instanceof \Traversable) {
-                foreach ($value as $nIndex => $nValue) {
-                    if ($nValue instanceof FilterInterface && !$nValue->isValid()) {
-                        $errors[$index][$nIndex] = $nValue->getErrors();
-                    }
-                }
-            }
-        }
-
-        return $errors;
-    }
 }
