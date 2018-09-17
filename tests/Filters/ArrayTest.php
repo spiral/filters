@@ -32,8 +32,8 @@ class ArrayTest extends BaseTest
     {
         $filter = new ArrayFilter(new ArrayInput([
             'tests' => [
-                ['id' => 'value'],
-                ['id' => null],
+                0 => ['id' => 'value'],
+                1 => ['id' => null],
             ]
         ]), $this->getMapper());
 
@@ -49,5 +49,11 @@ class ArrayTest extends BaseTest
                 ]
             ]
         ], $filter->getErrors());
+    }
+
+    public function testEmptyValid()
+    {
+        $filter = new ArrayFilter(new ArrayInput([]), $this->getMapper());
+        $this->assertTrue($filter->isValid());
     }
 }

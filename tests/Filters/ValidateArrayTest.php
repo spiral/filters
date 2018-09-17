@@ -59,6 +59,7 @@ class ValidateArrayTest extends BaseTest
         ]), $this->getMapper());
 
         $this->assertFalse($filter->isValid());
+
         $this->assertSame([
             'tests' => 'No tests are specified.'
         ], $filter->getErrors());

@@ -10,18 +10,18 @@ namespace Spiral\Filters\Tests;
 
 
 use Spiral\Filters\ArrayInput;
-use Spiral\Filters\Tests\Fixtures\ArrayInterateByPathFilter;
+use Spiral\Filters\Tests\Fixtures\ArrayIterateByPathFilter;
 
 class ArrayIterateByPathFilterTest extends BaseTest
 {
     public function testValid()
     {
-        $filter = new ArrayInterateByPathFilter(new ArrayInput([
+        $filter = new ArrayIterateByPathFilter(new ArrayInput([
             'custom' => [
-                ['id' => 'value'],
-                ['id' => 'value2'],
+                0 => ['id' => 'value'],
+                1 => ['id' => 'value2'],
             ],
-            'by'    => [1, 2]
+            'by'     => [0 => 'value', 1 => 'value']
         ]), $this->getMapper());
 
         $this->assertTrue($filter->isValid());
@@ -30,14 +30,34 @@ class ArrayIterateByPathFilterTest extends BaseTest
         $this->assertSame('value2', $filter->tests[1]->id);
     }
 
+    public function testExcludeElement()
+    {
+        $filter = new ArrayIterateByPathFilter(new ArrayInput([
+            'custom' => [
+                0 => ['id' => 'value'],
+                1 => ['id' => 'value2'],
+            ],
+            'by'     => [0 => 'value']
+        ]), $this->getMapper());
+
+        $this->assertTrue($filter->isValid());
+
+        $this->assertSame('value', $filter->tests[0]->id);
+        $this->assertFalse(isset($filter->tests[1]));
+    }
+
     public function testInvalid()
     {
-        $filter = new ArrayInterateByPathFilter(new ArrayInput([
+        $filter = new ArrayIterateByPathFilter(new ArrayInput([
             'custom' => [
                 'a' => ['id' => 'value'],
                 'b' => ['id' => null],
             ],
-            'by'    => ['a' => 1, 'b' => 2, 'c' => 3]
+            'by'     => [
+                'a' => 1,
+                'b' => 2,
+                'c' => 3
+            ]
         ]), $this->getMapper());
 
         $this->assertFalse($filter->isValid());
@@ -48,19 +68,15 @@ class ArrayIterateByPathFilterTest extends BaseTest
 
         $this->assertSame([
             'custom' => [
-                'b' => [
-                    'id' => 'This value is required.'
-                ],
-                'c' => [
-                    'id' => 'This value is required.'
-                ],
+                'b' => ['id' => 'This value is required.'],
+                'c' => ['id' => 'This value is required.'],
             ]
         ], $filter->getErrors());
     }
 
     public function testEmptyValid()
     {
-        $filter = new ArrayInterateByPathFilter(new ArrayInput([]), $this->getMapper());
+        $filter = new ArrayIterateByPathFilter(new ArrayInput([]), $this->getMapper());
         $this->assertTrue($filter->isValid());
     }
 }

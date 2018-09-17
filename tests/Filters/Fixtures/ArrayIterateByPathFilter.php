@@ -11,9 +11,9 @@ namespace Spiral\Filters\Tests\Fixtures;
 
 use Spiral\Filters\Filter;
 
-class ArrayInterateByPathFilter extends Filter
+class ArrayIterateByPathFilter extends Filter
 {
     const SCHEMA = [
-        'tests' => [TestFilter::class, "custom.*", 'by']
+        'tests' => [TestFilter::class, "custom.*", "by"]
     ];
 }
