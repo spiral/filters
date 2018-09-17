@@ -80,11 +80,14 @@ final class FilterMapper implements MapperInterface, SingletonInterface
                 continue;
             }
 
+            $values = [];
+
             // List of "key" => "location in request"
             foreach ($this->iterate($input, $map) as $index => $origin) {
-                // slicing as array
-                $filter->setField($field, new $nested($input->withPrefix($origin), $this));
+                $values[$index] = new $nested($input->withPrefix($origin), $this);
             }
+
+            $filter->setField($field, $values);
         }
     }
 
