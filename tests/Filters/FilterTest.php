@@ -34,4 +34,26 @@ class FilterTest extends BaseTest
             'id' => 'This value is required.'
         ], $filter->getErrors());
     }
+
+    public function testSetRevalidate()
+    {
+        $filter = new TestFilter(new ArrayInput([
+            'id' => 'value'
+        ]), $this->getMapper());
+
+        $this->assertTrue($filter->isValid());
+        $filter->id = null;
+        $this->assertFalse($filter->isValid());
+    }
+
+    public function testUnsetRevalidate()
+    {
+        $filter = new TestFilter(new ArrayInput([
+            'id' => 'value'
+        ]), $this->getMapper());
+
+        $this->assertTrue($filter->isValid());
+        unset($filter->id);
+        $this->assertFalse($filter->isValid());
+    }
 }
