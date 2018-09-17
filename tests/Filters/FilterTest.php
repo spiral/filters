@@ -20,6 +20,7 @@ class FilterTest extends BaseTest
         ]), $this->getMapper());
 
         $this->assertTrue($filter->isValid());
+        $this->assertSame('value', $filter->id);
     }
 
     public function testInvalid()
