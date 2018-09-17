@@ -170,7 +170,7 @@ class SchemaBuilder
         string $definition
     ): array {
         if (strpos($definition, ':') === false) {
-            return [$filter->getProperty('default_source', true), $field, $definition];
+            return [$filter->getProperty('default_source', true), $definition ?? $field];
         }
 
         return explode(':', $definition);
