@@ -29,7 +29,7 @@ trait ValidateTrait
     public function setContext($context)
     {
         $this->context = $context;
-        $this->errors = null;
+        $this->reset();
     }
 
     /**

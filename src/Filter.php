@@ -62,11 +62,11 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     public const DEFAULT_SOURCE = 'data';
 
     // Filter specific schema segments
-    public const SH_MAP       = 0;
+    public const SH_MAP = 0;
     public const SH_VALIDATES = 1;
 
     // Defines request data mapping (input => request property)
-    public const SCHEMA    = [];
+    public const SCHEMA = [];
     public const VALIDATES = [];
 
     /** @var MapperInterface */
@@ -94,8 +94,8 @@ abstract class Filter extends SchematicEntity implements FilterInterface
      */
     public function setField(string $name, $value, bool $filter = true)
     {
-        $this->errors = null;
         parent::setField($name, $value, $filter);
+        $this->reset();
     }
 
     /**
@@ -103,8 +103,8 @@ abstract class Filter extends SchematicEntity implements FilterInterface
      */
     public function __unset($offset)
     {
-        $this->errors = null;
         parent::__unset($offset);
+        $this->reset();
     }
 
     /**

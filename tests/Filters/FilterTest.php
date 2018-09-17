@@ -42,14 +42,21 @@ class FilterTest extends BaseTest
         $this->assertFalse($filter->hasErrors('key'));
     }
 
-    public function testReset()
+    public function testContext()
     {
         $filter = new TestFilter(new ArrayInput([
             'id' => 'value'
         ]), $this->getMapper());
 
+        $this->assertSame(null, $filter->getContext());
         $this->assertTrue($filter->isValid());
-        $filter->reset();
+
+        $filter->setContext("value");
+        $this->assertSame("value", $filter->getContext());
+        $this->assertTrue($filter->isValid());
+
+        $filter->setContext(null);
+        $this->assertSame(null, $filter->getContext());
         $this->assertTrue($filter->isValid());
     }
 
