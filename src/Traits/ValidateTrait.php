@@ -38,19 +38,6 @@ trait ValidateTrait
     }
 
     /**
-     * @param string|null $field
-     * @return bool
-     */
-    public function hasErrors(string $field = null): bool
-    {
-        if (empty($field)) {
-            return !$this->isValid();
-        }
-
-        return !empty($this->getErrors()[$field]);
-    }
-
-    /**
      * @inheritdoc
      */
     public function isValid(): bool
@@ -86,7 +73,7 @@ trait ValidateTrait
     abstract protected function validate(): ValidatorInterface;
 
     /**
-     * Reset validation state.
+     * Force re-validation.
      */
     abstract public function reset();
 

@@ -20,9 +20,6 @@ class FilterTest extends BaseTest
         ]), $this->getMapper());
 
         $this->assertTrue($filter->isValid());
-        $this->assertFalse($filter->hasErrors());
-        $this->assertFalse($filter->hasErrors('id'));
-        $this->assertFalse($filter->hasErrors('key'));
     }
 
     public function testInvalid()
@@ -36,10 +33,6 @@ class FilterTest extends BaseTest
         $this->assertSame([
             'id' => 'This value is required.'
         ], $filter->getErrors());
-
-        $this->assertTrue($filter->hasErrors());
-        $this->assertTrue($filter->hasErrors('id'));
-        $this->assertFalse($filter->hasErrors('key'));
     }
 
     public function testContext()
