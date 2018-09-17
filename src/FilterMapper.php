@@ -20,10 +20,10 @@ final class FilterMapper implements MapperInterface, SingletonInterface
     protected const MEMORY = 'filters';
 
     // Packed schema definitions
-    public const SOURCE         = 0;
-    public const ORIGIN         = 1;
-    public const FILTER         = 2;
-    public const ARRAY          = 3;
+    public const SOURCE = 0;
+    public const ORIGIN = 1;
+    public const FILTER = 2;
+    public const ARRAY = 3;
     public const ITERATE_SOURCE = 4;
     public const ITERATE_ORIGIN = 5;
 

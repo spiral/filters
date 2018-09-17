@@ -73,7 +73,6 @@ trait ValidateTrait
         }
 
         $this->errors = $this->validate()->getErrors();
-
         foreach ($this->errors as &$error) {
             if (is_string($error) && Translator::isMessage($error)) {
                 // translate error message
