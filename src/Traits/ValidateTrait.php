@@ -17,9 +17,6 @@ trait ValidateTrait
 {
     use TranslatorTrait;
 
-    /** @var array|null */
-    private $errors = null;
-
     /** @var mixed */
     private $context = null;
 
@@ -68,12 +65,8 @@ trait ValidateTrait
      */
     public function getErrors(): array
     {
-        if ($this->errors !== null) {
-            return $this->validateNested($this->errors);
-        }
-
-        $this->errors = $this->validate()->getErrors();
-        foreach ($this->errors as &$error) {
+        $errors = $this->validate()->getErrors();
+        foreach ($errors as &$error) {
             if (is_string($error) && Translator::isMessage($error)) {
                 // translate error message
                 $error = $this->say($error);
@@ -82,15 +75,7 @@ trait ValidateTrait
             unset($error);
         }
 
-        return $this->validateNested($this->errors);
-    }
-
-    /**
-     * Force re-validation.
-     */
-    public function reset()
-    {
-        $this->errors = null;
+        return $this->validateNested($errors);
     }
 
     /**
@@ -99,6 +84,11 @@ trait ValidateTrait
      * @return ValidatorInterface
      */
     abstract protected function validate(): ValidatorInterface;
+
+    /**
+     * Reset validation state.
+     */
+    abstract public function reset();
 
     /**
      * Validate inner entities.

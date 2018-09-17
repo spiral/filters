@@ -73,7 +73,7 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     private $mapper;
 
     /** @var array|null */
-    private $mappedErrors = null;
+    private $errors = null;
 
     /**
      * @param InputInterface|null  $input
@@ -114,12 +114,20 @@ abstract class Filter extends SchematicEntity implements FilterInterface
      */
     public function getErrors(): array
     {
-        if ($this->mappedErrors !== null && $this->errors !== null) {
-            return $this->validateNested($this->mappedErrors);
+        if ($this->errors !== null) {
+            return $this->validateNested($this->errors);
         }
 
         //Making sure that each error point to proper input origin
-        return $this->mappedErrors = $this->mapper->mapErrors($this, $this->fetchErrors());
+        return $this->errors = $this->mapper->mapErrors($this, $this->fetchErrors());
+    }
+
+    /**
+     * Force re-validation.
+     */
+    public function reset()
+    {
+        $this->errors = null;
     }
 
     /**
