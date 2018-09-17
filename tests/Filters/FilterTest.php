@@ -56,4 +56,22 @@ class FilterTest extends BaseTest
         unset($filter->id);
         $this->assertFalse($filter->isValid());
     }
+
+    public function testDebugInfo()
+    {
+        $filter = new TestFilter(new ArrayInput([
+            'id' => 'value'
+        ]), $this->getMapper());
+
+        $info = $filter->__debugInfo();
+
+        $this->assertSame([
+            'valid'  => true,
+            'fields' => [
+                'id'  => 'value',
+                'key' => null
+            ],
+            'errors' => []
+        ], $info);
+    }
 }
