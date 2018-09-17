@@ -13,6 +13,6 @@ use Spiral\Filters\Filter;
 class ArrayFilter extends Filter
 {
     const SCHEMA = [
-        'tests' => [TestFilter::class, 'tests.*']
+        'tests' => [TestFilter::class]
     ];
 }
