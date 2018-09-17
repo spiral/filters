@@ -72,7 +72,7 @@ abstract class BaseTest extends TestCase
         );
     }
 
-    protected function getMapper(): MapperInterface
+    protected function getMapper(): FilterMapper
     {
         return new FilterMapper(
             new NullMemory(),

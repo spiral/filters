@@ -96,7 +96,7 @@ class SchemaBuilder
 
                 if (!$this->has($definition)) {
                     throw new SchemaException(
-                        "Invalid nested filter `{$definition}` at `{$filter}`->`{$field}`."
+                        "Invalid nested filter `{$definition}` at `{$filter->getName()}`->`{$field}`."
                     );
                 }
 
