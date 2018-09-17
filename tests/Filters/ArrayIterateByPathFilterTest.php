@@ -8,18 +8,20 @@
 
 namespace Spiral\Filters\Tests;
 
-use Spiral\Filters\ArrayInput;
-use Spiral\Filters\Tests\Fixtures\ArrayPathFilter;
 
-class ArrayPathTest extends BaseTest
+use Spiral\Filters\ArrayInput;
+use Spiral\Filters\Tests\Fixtures\ArrayInterateByPathFilter;
+
+class ArrayIterateByPathFilterTest extends BaseTest
 {
     public function testValid()
     {
-        $filter = new ArrayPathFilter(new ArrayInput([
+        $filter = new ArrayInterateByPathFilter(new ArrayInput([
             'custom' => [
                 ['id' => 'value'],
                 ['id' => 'value2'],
-            ]
+            ],
+            'by'    => [1, 2]
         ]), $this->getMapper());
 
         $this->assertTrue($filter->isValid());
@@ -30,30 +32,35 @@ class ArrayPathTest extends BaseTest
 
     public function testInvalid()
     {
-        $filter = new ArrayPathFilter(new ArrayInput([
+        $filter = new ArrayInterateByPathFilter(new ArrayInput([
             'custom' => [
-                ['id' => 'value'],
-                ['id' => null],
-            ]
+                'a' => ['id' => 'value'],
+                'b' => ['id' => null],
+            ],
+            'by'    => ['a' => 1, 'b' => 2, 'c' => 3]
         ]), $this->getMapper());
 
         $this->assertFalse($filter->isValid());
 
-        $this->assertSame('value', $filter->tests[0]->id);
-        $this->assertSame(null, $filter->tests[1]->id);
+        $this->assertSame('value', $filter->tests['a']->id);
+        $this->assertSame(null, $filter->tests['b']->id);
+        $this->assertSame(null, $filter->tests['c']->id);
 
         $this->assertSame([
             'custom' => [
-                1 => [
+                'b' => [
                     'id' => 'This value is required.'
-                ]
+                ],
+                'c' => [
+                    'id' => 'This value is required.'
+                ],
             ]
         ], $filter->getErrors());
     }
 
     public function testEmptyValid()
     {
-        $filter = new ArrayPathFilter(new ArrayInput([]), $this->getMapper());
+        $filter = new ArrayInterateByPathFilter(new ArrayInput([]), $this->getMapper());
         $this->assertTrue($filter->isValid());
     }
 }
