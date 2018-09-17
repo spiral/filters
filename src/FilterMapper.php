@@ -206,7 +206,7 @@ final class FilterMapper implements MapperInterface, SingletonInterface
     {
         if ($path == '.') {
             throw new MapperException(
-                "Invalid input location with error `{$message}` (valid pattern - `data:field_name`)."
+                "Unable to mount error `{$message}` to `{$path}` (root path is forbidden)."
             );
         }
 
