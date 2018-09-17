@@ -40,5 +40,9 @@ class MessageFilterTest extends BaseTest
         $this->assertTrue($filter->hasErrors());
         $this->assertTrue($filter->hasErrors('id'));
         $this->assertFalse($filter->hasErrors('key'));
+
+        $this->assertSame([
+            'id' => 'ID is not valid.'
+        ], $filter->getErrors());
     }
 }
