@@ -11,7 +11,7 @@ namespace Spiral\Filters\Tests;
 use Spiral\Filters\ArrayInput;
 use Spiral\Filters\Tests\Fixtures\ParentFilter;
 
-class NestedFilterTest extends BaseTest
+class NestedTest extends BaseTest
 {
     public function testChildrenValid()
     {
