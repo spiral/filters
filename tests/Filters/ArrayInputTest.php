@@ -37,4 +37,20 @@ class ArrayInputTest extends TestCase
         $this->assertSame('b', $arr->getValue('', 'key.a'));
         $this->assertSame('b', $arr2->getValue('', 'a'));
     }
+
+    public function testSlicedOverwrite()
+    {
+        $arr = new ArrayInput(['key' => ['a' => ['x' => 'y']]]);
+        $this->assertSame('y', $arr->getValue('', 'key.a.x'));
+
+        $arr2 = $arr->withPrefix('key');
+        $this->assertSame('y', $arr2->getValue('', 'a.x'));
+
+        $arr3 = $arr2->withPrefix('a');
+        $this->assertSame('y', $arr3->getValue('', 'x'));
+
+        // return
+        $arr4 = $arr3->withPrefix('key', false);
+        $this->assertSame('y', $arr4->getValue('', 'a.x'));
+    }
 }
