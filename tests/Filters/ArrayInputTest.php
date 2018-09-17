@@ -53,4 +53,10 @@ class ArrayInputTest extends TestCase
         $arr4 = $arr3->withPrefix('key', false);
         $this->assertSame('y', $arr4->getValue('', 'a.x'));
     }
+
+    public function testGetSlice()
+    {
+        $arr = new ArrayInput(['key' => ['a' => ['x' => 'y']]]);
+        $this->assertSame(['key' => ['a' => ['x' => 'y']]], $arr->getValue('', ''));
+    }
 }
