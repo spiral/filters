@@ -6,7 +6,7 @@
  * @author    Anton Titov (Wolfy-J)
  */
 
-namespace Spiral\Filters\Exceptions;
+namespace Spiral\Filters\Exception;
 
 class FilterException extends \RuntimeException
 {

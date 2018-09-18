@@ -8,7 +8,7 @@
 
 namespace Spiral\Filters;
 
-use Spiral\Filters\Exceptions\InputException;
+use Spiral\Filters\Exception\InputException;
 
 /**
  * Supplied filters with value set, must support prefix based slicing.

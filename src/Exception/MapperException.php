@@ -6,9 +6,9 @@
  * @author    Anton Titov (Wolfy-J)
  */
 
-namespace Spiral\Filters\Exceptions;
+namespace Spiral\Filters\Exception;
 
-class SchemaException extends FilterException
+class MapperException extends FilterException
 {
 
 }

@@ -8,7 +8,7 @@
 
 namespace Spiral\Filters;
 
-use Spiral\Filters\Exceptions\SchemaException;
+use Spiral\Filters\Exception\SchemaException;
 use Spiral\Models\Reflections\ReflectionEntity;
 
 class SchemaBuilder

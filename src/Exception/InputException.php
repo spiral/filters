@@ -6,9 +6,9 @@
  * @author    Anton Titov (Wolfy-J)
  */
 
-namespace Spiral\Filters\Exceptions;
+namespace Spiral\Filters\Exception;
 
-class DotNotFoundException extends \RuntimeException
+class InputException extends \RuntimeException
 {
 
 }

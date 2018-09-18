@@ -16,7 +16,7 @@ use Spiral\Models\Reflections\ReflectionEntity;
 class MappingTest extends BaseTest
 {
     /**
-     * @expectedException \Spiral\Filters\Exceptions\MapperException
+     * @expectedException \Spiral\Filters\Exception\MapperException
      */
     public function testInvalidPath()
     {

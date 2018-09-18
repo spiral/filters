@@ -8,12 +8,12 @@
 
 namespace Spiral\Filters;
 
-use Spiral\Filters\Exceptions\DotNotFoundException;
+use Spiral\Filters\Exception\DotNotFoundException;
 
 /**
  * Slices over array data.
  */
-class ArrayInput implements InputInterface
+final class ArrayInput implements InputInterface
 {
     /** @var array */
     private $data = [];

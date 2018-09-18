@@ -8,7 +8,7 @@
 
 namespace Spiral\Filters;
 
-use Spiral\Filters\Exceptions\MapperException;
+use Spiral\Filters\Exception\MapperException;
 use Spiral\Validation\Exceptions\ValidationException;
 use Spiral\Validation\ValidatorInterface;
 

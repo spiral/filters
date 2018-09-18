@@ -10,8 +10,8 @@ namespace Spiral\Filters;
 
 use Spiral\Core\Container\SingletonInterface;
 use Spiral\Core\MemoryInterface;
-use Spiral\Filters\Exceptions\MapperException;
-use Spiral\Filters\Exceptions\SchemaException;
+use Spiral\Filters\Exception\MapperException;
+use Spiral\Filters\Exception\SchemaException;
 use Spiral\Validation\ValidationInterface;
 use Spiral\Validation\ValidatorInterface;
 
@@ -203,7 +203,7 @@ final class FilterMapper implements MapperInterface, SingletonInterface
      * @param string $path
      * @param mixed  $message
      *
-     * @throws \Spiral\Filters\Exceptions\MapperException
+     * @throws \Spiral\Filters\Exception\MapperException
      */
     private function mount(array &$array, string $path, $message)
     {

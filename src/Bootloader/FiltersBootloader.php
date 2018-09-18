@@ -6,9 +6,9 @@
  * @author    Anton Titov (Wolfy-J)
  */
 
-namespace Spiral\Filters\Bootloaders;
+namespace Spiral\Filters\Bootloader;
 
-use Spiral\Core\Bootloaders\Bootloader;
+use Spiral\Core\Bootloader\Bootloader;
 use Spiral\Filters\FilterLocator;
 use Spiral\Filters\FilterMapper;
 use Spiral\Filters\LocatorInterface;

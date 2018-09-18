@@ -36,7 +36,7 @@ class SchemasTest extends BaseTest
     }
 
     /**
-     * @expectedException \Spiral\Filters\Exceptions\SchemaException
+     * @expectedException \Spiral\Filters\Exception\SchemaException
      */
     public function testUndefinedSchema()
     {
@@ -44,7 +44,7 @@ class SchemasTest extends BaseTest
     }
 
     /**
-     * @expectedException \Spiral\Filters\Exceptions\SchemaException
+     * @expectedException \Spiral\Filters\Exception\SchemaException
      */
     public function testMissingRelation()
     {
@@ -69,7 +69,7 @@ class SchemasTest extends BaseTest
     }
 
     /**
-     * @expectedException \Spiral\Filters\Exceptions\SchemaException
+     * @expectedException \Spiral\Filters\Exception\SchemaException
      */
     public function testCustomButMissing()
     {
@@ -87,7 +87,7 @@ class SchemasTest extends BaseTest
     }
 
     /**
-     * @expectedException \Spiral\Filters\Exceptions\SchemaException
+     * @expectedException \Spiral\Filters\Exception\SchemaException
      */
     public function testEmptySchema()
     {
@@ -97,7 +97,7 @@ class SchemasTest extends BaseTest
     }
 
     /**
-     * @expectedException \Spiral\Filters\Exceptions\SchemaException
+     * @expectedException \Spiral\Filters\Exception\SchemaException
      * @expectedExceptionMessageRegExp /id/
      */
     public function testBrokenFilter()
