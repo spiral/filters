@@ -9,22 +9,26 @@
 namespace Spiral\Filters\Tests;
 
 use PHPUnit\Framework\TestCase;
-use Spiral\Core\BootloadManager;
 use Spiral\Core\Container;
 use Spiral\Core\NullMemory;
-use Spiral\Filters\Bootloader\FiltersBootloader;
+use Spiral\Filters\FilterLocator;
 use Spiral\Filters\FilterMapper;
 use Spiral\Filters\LocatorInterface;
-use Spiral\Tokenizer\Bootloader\TokenizerBootloader;
+use Spiral\Filters\MapperInterface;
+use Spiral\Tokenizer\ClassesInterface;
+use Spiral\Tokenizer\ClassLocator;
 use Spiral\Tokenizer\Config\TokenizerConfig;
-use Spiral\Validation\Bootloader\ValidationBootloader;
 use Spiral\Validation\Checker\AddressChecker;
 use Spiral\Validation\Checker\FileChecker;
 use Spiral\Validation\Checker\ImageChecker;
 use Spiral\Validation\Checker\StringChecker;
 use Spiral\Validation\Checker\TypeChecker;
 use Spiral\Validation\Config\ValidatorConfig;
+use Spiral\Validation\ParserInterface;
+use Spiral\Validation\RuleParser;
+use Spiral\Validation\RulesInterface;
 use Spiral\Validation\ValidationInterface;
+use Spiral\Validation\ValidationProvider;
 
 abstract class BaseTest extends TestCase
 {
@@ -53,12 +57,16 @@ abstract class BaseTest extends TestCase
     public function setUp()
     {
         $this->container = new Container();
-        $bootloder = new BootloadManager($this->container);
-        $bootloder->bootload([
-            TokenizerBootloader::class,
-            ValidationBootloader::class,
-            FiltersBootloader::class
-        ]);
+
+        $this->container->bindSingleton(ClassesInterface::class, ClassLocator::class);
+
+        $this->container->bindSingleton(ValidationInterface::class, ValidationProvider::class);
+        $this->container->bindSingleton(RulesInterface::class, ValidationProvider::class);
+        $this->container->bindSingleton(ParserInterface::class, RuleParser::class);
+
+        $this->container->bindSingleton(MapperInterface::class, FilterMapper::class);
+        $this->container->bindSingleton(LocatorInterface::class, FilterLocator::class);
+
 
         $this->container->bind(
             TokenizerConfig::class,
