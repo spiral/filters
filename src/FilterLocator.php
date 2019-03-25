@@ -8,7 +8,7 @@
 
 namespace Spiral\Filters;
 
-use Spiral\Models\Reflections\ReflectionEntity;
+use Spiral\Models\Reflection\ReflectionEntity;
 use Spiral\Tokenizer\ClassesInterface;
 
 final class FilterLocator implements LocatorInterface
