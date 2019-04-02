@@ -11,7 +11,7 @@ namespace Spiral\Filters\Tests;
 use Spiral\Filters\ArrayInput;
 use Spiral\Filters\SchemaBuilder;
 use Spiral\Filters\Tests\UserDefined\InvalidFilter;
-use Spiral\Models\Reflections\ReflectionEntity;
+use Spiral\Models\Reflection\ReflectionEntity;
 
 class MappingTest extends BaseTest
 {

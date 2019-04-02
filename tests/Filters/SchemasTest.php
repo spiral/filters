@@ -14,7 +14,7 @@ use Spiral\Filters\Tests\Fixtures\ParentFilter;
 use Spiral\Filters\Tests\Fixtures\TestFilter;
 use Spiral\Filters\Tests\UserDefined\BrokenFilter;
 use Spiral\Filters\Tests\UserDefined\EmptyFilter;
-use Spiral\Models\Reflections\ReflectionEntity;
+use Spiral\Models\Reflection\ReflectionEntity;
 
 class SchemasTest extends BaseTest
 {
