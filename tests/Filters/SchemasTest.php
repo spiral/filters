@@ -29,10 +29,6 @@ class SchemasTest extends BaseTest
         $mapper = $this->getMapper();
         $schema = $mapper->getSchema(TestFilter::class);
         $this->assertNotEmpty($schema);
-
-        $mapper->resetSchema();
-        $schema = $mapper->getSchema(TestFilter::class);
-        $this->assertNotEmpty($schema);
     }
 
     /**
@@ -43,46 +39,16 @@ class SchemasTest extends BaseTest
         $this->getMapper()->getSchema('undefined');
     }
 
-    /**
-     * @expectedException \Spiral\Filters\Exception\SchemaException
-     */
-    public function testMissingRelation()
-    {
-        $builder = new SchemaBuilder();
-        $builder->register(new ReflectionEntity(ParentFilter::class));
-        $builder->buildSchema();
-    }
-
     public function testCustomBuilder()
     {
         $mapper = $this->getMapper();
         $schema = $mapper->getSchema(TestFilter::class);
         $this->assertNotEmpty($schema);
 
-        $builder = new SchemaBuilder();
-        $builder->register(new ReflectionEntity(ParentFilter::class));
-        $builder->register(new ReflectionEntity(TestFilter::class));
+        $mapper->register(ParentFilter::class);
+        $mapper->register(TestFilter::class);
 
-        $mapper->setSchema($builder, false);
         $schema = $mapper->getSchema(TestFilter::class);
-        $this->assertNotEmpty($schema);
-    }
-
-    /**
-     * @expectedException \Spiral\Filters\Exception\SchemaException
-     */
-    public function testCustomButMissing()
-    {
-        $mapper = $this->getMapper();
-        $schema = $mapper->getSchema(TestFilter::class);
-        $this->assertNotEmpty($schema);
-
-        $builder = new SchemaBuilder();
-        $builder->register(new ReflectionEntity(ParentFilter::class));
-        $builder->register(new ReflectionEntity(TestFilter::class));
-
-        $mapper->setSchema($builder, false);
-        $schema = $mapper->getSchema(ExternalFilter::class);
         $this->assertNotEmpty($schema);
     }
 
@@ -91,9 +57,8 @@ class SchemasTest extends BaseTest
      */
     public function testEmptySchema()
     {
-        $builder = new SchemaBuilder();
-        $builder->register(new ReflectionEntity(EmptyFilter::class));
-        $builder->buildSchema();
+        $builder = new SchemaBuilder(new ReflectionEntity(EmptyFilter::class));
+        $builder->makeSchema();
     }
 
     /**
@@ -102,8 +67,7 @@ class SchemasTest extends BaseTest
      */
     public function testBrokenFilter()
     {
-        $builder = new SchemaBuilder();
-        $builder->register(new ReflectionEntity(BrokenFilter::class));
-        $builder->buildSchema();
+        $builder = new SchemaBuilder(new ReflectionEntity(BrokenFilter::class));
+        $builder->makeSchema();
     }
 }

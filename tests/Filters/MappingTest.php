@@ -9,9 +9,7 @@
 namespace Spiral\Filters\Tests;
 
 use Spiral\Filters\ArrayInput;
-use Spiral\Filters\SchemaBuilder;
 use Spiral\Filters\Tests\UserDefined\InvalidFilter;
-use Spiral\Models\Reflection\ReflectionEntity;
 
 class MappingTest extends BaseTest
 {
@@ -20,11 +18,8 @@ class MappingTest extends BaseTest
      */
     public function testInvalidPath()
     {
-        $builder = new SchemaBuilder();
-        $builder->register(new ReflectionEntity(InvalidFilter::class));
-
         $mapper = $this->getMapper();
-        $mapper->setSchema($builder, false);
+        $mapper->register(InvalidFilter::class);
 
         $filter = new InvalidFilter(new ArrayInput([]), $mapper);
         $filter->isValid();

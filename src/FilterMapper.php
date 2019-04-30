@@ -5,55 +5,41 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters;
 
 use Spiral\Core\Container\SingletonInterface;
-use Spiral\Core\MemoryInterface;
 use Spiral\Filters\Exception\MapperException;
 use Spiral\Filters\Exception\SchemaException;
+use Spiral\Models\Reflection\ReflectionEntity;
 use Spiral\Validation\ValidationInterface;
 use Spiral\Validation\ValidatorInterface;
 
 final class FilterMapper implements MapperInterface, SingletonInterface
 {
-    protected const MEMORY = 'filters';
-
     // Packed schema definitions
-    public const SOURCE = 0;
-    public const ORIGIN = 1;
-    public const FILTER = 2;
-    public const ARRAY = 3;
+    public const SOURCE         = 0;
+    public const ORIGIN         = 1;
+    public const FILTER         = 2;
+    public const ARRAY          = 3;
     public const ITERATE_SOURCE = 4;
     public const ITERATE_ORIGIN = 5;
 
-    /** @var MemoryInterface */
-    private $memory;
-
-    /** @var LocatorInterface */
-    private $locator;
+    /** @var CacheInterface */
+    private $cache;
 
     /** @var ValidationInterface */
     private $validation;
 
-    /** @var array */
-    private $schema;
-
     /**
-     * @param MemoryInterface     $memory
-     * @param LocatorInterface    $locator
      * @param ValidationInterface $validation
+     * @param CacheInterface      $cache
      */
-    public function __construct(
-        MemoryInterface $memory,
-        LocatorInterface $locator,
-        ValidationInterface $validation
-    ) {
-        $this->memory = $memory;
-        $this->locator = $locator;
+    public function __construct(ValidationInterface $validation, CacheInterface $cache = null)
+    {
         $this->validation = $validation;
-
-        $this->schema = $this->loadSchema();
+        $this->cache = $cache ?? new RuntimeCache();
     }
 
     /**
@@ -129,71 +115,28 @@ final class FilterMapper implements MapperInterface, SingletonInterface
      */
     public function getSchema(string $filter): array
     {
-        if (empty($this->schema)) {
-            $this->setSchema($this->buildSchema($this->locator), true);
+        $schema = $this->cache->getSchema($filter);
+        if ($schema === null) {
+            $this->register($filter);
         }
 
-        if (!isset($this->schema[$filter])) {
-            throw new SchemaException(
-                "Undefined filter `{$filter}`, make sure schema to update schema."
-            );
-        }
-
-        return $this->schema[$filter];
+        return $this->cache->getSchema($filter);
     }
 
     /**
-     * Generate filters schema.
-     *
-     * @param LocatorInterface|null $locator
-     * @return SchemaBuilder
+     * @param string $filter
      *
      * @throws SchemaException
      */
-    public function buildSchema(LocatorInterface $locator = null): SchemaBuilder
+    public function register(string $filter)
     {
-        $builder = new SchemaBuilder();
-        if (!empty($locator)) {
-            foreach ($locator->locateFilters() as $filter) {
-                $builder->register($filter);
-            }
+        try {
+            $builder = new SchemaBuilder(new ReflectionEntity($filter));
+        } catch (\ReflectionException $e) {
+            throw new SchemaException($e->getMessage(), $e->getCode(), $e);
         }
 
-        return $builder;
-    }
-
-    /**
-     * Update filter schema using schema builder.
-     *
-     * @param SchemaBuilder $builder
-     * @param bool          $memorize
-     */
-    public function setSchema(SchemaBuilder $builder, bool $memorize = false)
-    {
-        $this->schema = $builder->buildSchema();
-
-        if ($memorize) {
-            $this->memory->saveData(static::MEMORY, $this->schema);
-        }
-    }
-
-    /**
-     * Reset filters schema.
-     */
-    public function resetSchema()
-    {
-        $this->schema = [];
-        $this->memory->saveData(self::MEMORY, []);
-    }
-
-    /**
-     * Load packed schema from memory.
-     *
-     * @return array
-     */
-    private function loadSchema(): array
-    {
-        return (array)$this->memory->loadData(static::MEMORY);
+        $this->cache->setSchema($builder->getName(), $builder->makeSchema());
     }
 
     /**
@@ -209,7 +152,7 @@ final class FilterMapper implements MapperInterface, SingletonInterface
     {
         if ($path == '.') {
             throw new MapperException(
-                "Unable to mount error `{$message}` to `{$path}` (root path is forbidden)."
+                "Unable to mount error `{$message}` to `{$path}` (root path is forbidden)"
             );
         }
 

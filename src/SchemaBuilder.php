@@ -5,45 +5,37 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters;
 
 use Spiral\Filters\Exception\SchemaException;
 use Spiral\Models\Reflection\ReflectionEntity;
 
-class SchemaBuilder
+final class SchemaBuilder
 {
     // Used to define multiple nested models.
-    protected const NESTED = 0;
-    protected const ORIGIN = 1;
+    protected const NESTED  = 0;
+    protected const ORIGIN  = 1;
     protected const ITERATE = 2;
 
-    /** @var ReflectionEntity[] */
-    private $filters = [];
+    /** @var ReflectionEntity */
+    private $entity;
 
     /**
-     * Register new filter entity.
-     *
      * @param ReflectionEntity $entity
      */
-    public function register(ReflectionEntity $entity)
+    public function __construct(ReflectionEntity $entity)
     {
-        $this->filters[] = $entity;
+        $this->entity = $entity;
     }
 
     /**
-     * @param string $class
-     * @return bool
+     * @return string
      */
-    public function has(string $class)
+    public function getName(): string
     {
-        foreach ($this->filters as $filter) {
-            if ($filter->getName() == $class) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->entity->getName();
     }
 
     /**
@@ -53,20 +45,15 @@ class SchemaBuilder
      *
      * @throws SchemaException
      */
-    public function buildSchema(): array
+    public function makeSchema(): array
     {
-        $schema = [];
-        foreach ($this->filters as $filter) {
-            $schema[$filter->getName()] = [
-                Filter::SH_MAP       => $this->buildMap($filter),
-                Filter::SH_VALIDATES => $filter->getProperty('validates', true) ?? [],
-                Filter::SH_SECURED   => $filter->getSecured(),
-                Filter::SH_FILLABLE  => $filter->getFillable(),
-                Filter::SH_MUTATORS  => $filter->getMutators(),
-            ];
-        }
-
-        return $schema;
+        return [
+            Filter::SH_MAP       => $this->buildMap($this->entity),
+            Filter::SH_VALIDATES => $this->entity->getProperty('validates', true) ?? [],
+            Filter::SH_SECURED   => $this->entity->getSecured(),
+            Filter::SH_FILLABLE  => $this->entity->getFillable(),
+            Filter::SH_MUTATORS  => $this->entity->getMutators(),
+        ];
     }
 
     /**
@@ -92,12 +79,6 @@ class SchemaBuilder
                         FilterMapper::ORIGIN => $origin
                     ];
                     continue;
-                }
-
-                if (!$this->has($definition)) {
-                    throw new SchemaException(
-                        "Invalid nested filter `{$definition}` at `{$filter->getName()}`->`{$field}`."
-                    );
                 }
 
                 //Singular nested model

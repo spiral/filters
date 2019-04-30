@@ -11,13 +11,11 @@ namespace Spiral\Filters\Tests;
 use PHPUnit\Framework\TestCase;
 use Spiral\Core\Container;
 use Spiral\Core\NullMemory;
-use Spiral\Filters\FilterLocator;
 use Spiral\Filters\FilterMapper;
 use Spiral\Filters\LocatorInterface;
 use Spiral\Filters\MapperInterface;
 use Spiral\Tokenizer\ClassesInterface;
 use Spiral\Tokenizer\ClassLocator;
-use Spiral\Tokenizer\Config\TokenizerConfig;
 use Spiral\Validation\Checker\AddressChecker;
 use Spiral\Validation\Checker\FileChecker;
 use Spiral\Validation\Checker\ImageChecker;
@@ -65,13 +63,6 @@ abstract class BaseTest extends TestCase
         $this->container->bindSingleton(ParserInterface::class, RuleParser::class);
 
         $this->container->bindSingleton(MapperInterface::class, FilterMapper::class);
-        $this->container->bindSingleton(LocatorInterface::class, FilterLocator::class);
-
-
-        $this->container->bind(
-            TokenizerConfig::class,
-            new TokenizerConfig(static::TOKENIZER_CONFIG)
-        );
 
         $this->container->bind(
             ValidatorConfig::class,
@@ -81,10 +72,6 @@ abstract class BaseTest extends TestCase
 
     protected function getMapper(): FilterMapper
     {
-        return new FilterMapper(
-            new NullMemory(),
-            $this->container->get(LocatorInterface::class),
-            $this->container->get(ValidationInterface::class)
-        );
+        return new FilterMapper($this->container->get(ValidationInterface::class));
     }
 }

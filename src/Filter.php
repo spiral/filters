@@ -5,6 +5,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters;
 
@@ -62,11 +63,11 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     public const DEFAULT_SOURCE = 'data';
 
     // Filter specific schema segments
-    public const SH_MAP = 0;
+    public const SH_MAP       = 0;
     public const SH_VALIDATES = 1;
 
     // Defines request data mapping (input => request property)
-    public const SCHEMA = [];
+    public const SCHEMA    = [];
     public const VALIDATES = [];
 
     /** @var MapperInterface */
@@ -81,6 +82,7 @@ abstract class Filter extends SchematicEntity implements FilterInterface
      */
     public function __construct(InputInterface $input = null, MapperInterface $mapper = null)
     {
+        // get filter from global IoC scope if none provided
         $this->mapper = $this->saturate($mapper, MapperInterface::class);
         parent::__construct([], $mapper->getSchema(get_class($this)));
 
