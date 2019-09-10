@@ -87,8 +87,7 @@ class FilterTest extends BaseTest
         $this->assertSame([
             'valid'  => true,
             'fields' => [
-                'id'  => 'value',
-                'key' => null
+                'id' => 'value',
             ],
             'errors' => []
         ], $info);

@@ -49,10 +49,11 @@ final class FilterMapper implements MapperInterface, SingletonInterface
     {
         foreach ($this->getSchema(get_class($filter))[Filter::SH_MAP] as $field => $map) {
             if (empty($map[self::FILTER])) {
-                $filter->setField(
-                    $field,
-                    $input->getValue($map[self::SOURCE], $map[self::ORIGIN])
-                );
+                $value = $input->getValue($map[self::SOURCE], $map[self::ORIGIN]);
+
+                if ($value !== null) {
+                    $filter->setField($field, $value);
+                }
                 continue;
             }
 
