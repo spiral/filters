@@ -10,5 +10,4 @@ namespace Spiral\Filters\Exception;
 
 class MapperException extends FilterException
 {
-
 }

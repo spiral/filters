@@ -11,5 +11,4 @@ namespace Spiral\Filters\Exception;
 
 class FilterException extends \RuntimeException
 {
-
 }

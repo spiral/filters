@@ -36,5 +36,4 @@ class ParentPathTest extends BaseTest
             ]
         ], $filter->getErrors());
     }
-
 }

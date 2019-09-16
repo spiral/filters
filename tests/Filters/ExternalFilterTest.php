@@ -8,7 +8,6 @@
 
 namespace Spiral\Filters\Tests;
 
-
 use Spiral\Filters\ArrayInput;
 use Spiral\Filters\Tests\Fixtures\ExternalFilter;
 
@@ -40,5 +39,4 @@ class ExternalFilterTest extends BaseTest
             'id' => 'This value is required.'
         ], $filter->getErrors());
     }
-
 }

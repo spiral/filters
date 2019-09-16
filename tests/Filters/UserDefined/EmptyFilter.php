@@ -8,10 +8,8 @@
 
 namespace Spiral\Filters\Tests\UserDefined;
 
-
 use Spiral\Filters\Filter;
 
 class EmptyFilter extends Filter
 {
-
 }

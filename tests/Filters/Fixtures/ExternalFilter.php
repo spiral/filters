@@ -8,7 +8,6 @@
 
 namespace Spiral\Filters\Tests\Fixtures;
 
-
 use Spiral\Filters\Filter;
 
 class ExternalFilter extends Filter

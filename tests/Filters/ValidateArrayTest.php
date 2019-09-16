@@ -8,7 +8,6 @@
 
 namespace Spiral\Filters\Tests;
 
-
 use Spiral\Filters\ArrayInput;
 use Spiral\Filters\Tests\Fixtures\ValidateArrayFilter;
 
