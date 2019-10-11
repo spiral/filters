@@ -1,13 +1,14 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
-
 
 use Spiral\Filters\ArrayInput;
 use Spiral\Filters\Tests\Fixtures\ExternalFilter;
@@ -15,7 +16,7 @@ use Spiral\Filters\Tests\Fixtures\ExternalFilter;
 // values not mentioned in schema
 class ExternalFilterTest extends BaseTest
 {
-    public function testExternalValidation()
+    public function testExternalValidation(): void
     {
         $filter = new ExternalFilter(new ArrayInput([
             'id' => 'value'
@@ -28,7 +29,7 @@ class ExternalFilterTest extends BaseTest
         $this->assertSame('value', $filter->id);
     }
 
-    public function testInvalid()
+    public function testInvalid(): void
     {
         $filter = new ExternalFilter(new ArrayInput([
             'key' => 'value'
@@ -40,5 +41,4 @@ class ExternalFilterTest extends BaseTest
             'id' => 'This value is required.'
         ], $filter->getErrors());
     }
-
 }

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -23,7 +24,7 @@ trait ValidateTrait
     /**
      * @inheritdoc
      */
-    public function setContext($context)
+    public function setContext($context): void
     {
         $this->context = $context;
         $this->reset();
@@ -66,14 +67,14 @@ trait ValidateTrait
     }
 
     /**
+     * Force re-validation.
+     */
+    abstract public function reset();
+
+    /**
      * Validate entity.
      *
      * @return ValidatorInterface
      */
     abstract protected function validate(): ValidatorInterface;
-
-    /**
-     * Force re-validation.
-     */
-    abstract public function reset();
 }

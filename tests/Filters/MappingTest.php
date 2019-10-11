@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
@@ -16,7 +18,7 @@ class MappingTest extends BaseTest
     /**
      * @expectedException \Spiral\Filters\Exception\MapperException
      */
-    public function testInvalidPath()
+    public function testInvalidPath(): void
     {
         $mapper = $this->getMapper();
         $mapper->register(InvalidFilter::class);

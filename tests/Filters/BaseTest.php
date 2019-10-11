@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
@@ -30,14 +32,12 @@ use Spiral\Validation\ValidationProvider;
 
 abstract class BaseTest extends TestCase
 {
-    protected $container;
-
-    const TOKENIZER_CONFIG = [
+    public const TOKENIZER_CONFIG = [
         'directories' => [__DIR__ . '/Fixtures/'],
         'exclude'     => ['User'],
     ];
 
-    const VALIDATION_CONFIG = [
+    public const VALIDATION_CONFIG = [
         'checkers' => [
             'file'    => FileChecker::class,
             'image'   => ImageChecker::class,
@@ -51,8 +51,9 @@ abstract class BaseTest extends TestCase
             'url'      => 'address::url',
         ],
     ];
+    protected $container;
 
-    public function setUp()
+    public function setUp(): void
     {
         $this->container = new Container();
 

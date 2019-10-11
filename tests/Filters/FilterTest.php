@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
@@ -13,7 +15,7 @@ use Spiral\Filters\Tests\Fixtures\TestFilter;
 
 class FilterTest extends BaseTest
 {
-    public function testValid()
+    public function testValid(): void
     {
         $filter = new TestFilter(new ArrayInput([
             'id' => 'value'
@@ -23,7 +25,7 @@ class FilterTest extends BaseTest
         $this->assertSame('value', $filter->id);
     }
 
-    public function testInvalid()
+    public function testInvalid(): void
     {
         $filter = new TestFilter(new ArrayInput([
             'key' => 'value'
@@ -36,7 +38,7 @@ class FilterTest extends BaseTest
         ], $filter->getErrors());
     }
 
-    public function testContext()
+    public function testContext(): void
     {
         $filter = new TestFilter(new ArrayInput([
             'id' => 'value'
@@ -45,8 +47,8 @@ class FilterTest extends BaseTest
         $this->assertSame(null, $filter->getContext());
         $this->assertTrue($filter->isValid());
 
-        $filter->setContext("value");
-        $this->assertSame("value", $filter->getContext());
+        $filter->setContext('value');
+        $this->assertSame('value', $filter->getContext());
         $this->assertTrue($filter->isValid());
 
         $filter->setContext(null);
@@ -54,7 +56,7 @@ class FilterTest extends BaseTest
         $this->assertTrue($filter->isValid());
     }
 
-    public function testSetRevalidate()
+    public function testSetRevalidate(): void
     {
         $filter = new TestFilter(new ArrayInput([
             'id' => 'value'
@@ -65,7 +67,7 @@ class FilterTest extends BaseTest
         $this->assertFalse($filter->isValid());
     }
 
-    public function testUnsetRevalidate()
+    public function testUnsetRevalidate(): void
     {
         $filter = new TestFilter(new ArrayInput([
             'id' => 'value'
@@ -76,7 +78,7 @@ class FilterTest extends BaseTest
         $this->assertFalse($filter->isValid());
     }
 
-    public function testDebugInfo()
+    public function testDebugInfo(): void
     {
         $filter = new TestFilter(new ArrayInput([
             'id' => 'value'

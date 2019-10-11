@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -45,7 +46,7 @@ final class FilterMapper implements MapperInterface, SingletonInterface
     /**
      * @inheritdoc
      */
-    public function initValues(FilterInterface $filter, InputInterface $input)
+    public function initValues(FilterInterface $filter, InputInterface $input): void
     {
         foreach ($this->getSchema(get_class($filter))[Filter::SH_MAP] as $field => $map) {
             if (empty($map[self::FILTER])) {
@@ -129,7 +130,7 @@ final class FilterMapper implements MapperInterface, SingletonInterface
      *
      * @throws SchemaException
      */
-    public function register(string $filter)
+    public function register(string $filter): void
     {
         try {
             $builder = new SchemaBuilder(new ReflectionEntity($filter));
@@ -149,7 +150,7 @@ final class FilterMapper implements MapperInterface, SingletonInterface
      *
      * @throws \Spiral\Filters\Exception\MapperException
      */
-    private function mount(array &$array, string $path, $message)
+    private function mount(array &$array, string $path, $message): void
     {
         if ($path == '.') {
             throw new MapperException(

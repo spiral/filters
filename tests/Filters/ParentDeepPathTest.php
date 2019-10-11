@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
@@ -13,7 +15,7 @@ use Spiral\Filters\Tests\Fixtures\ParentDeepPathFilter;
 
 class ParentDeepPathTest extends BaseTest
 {
-    public function testChildrenValid()
+    public function testChildrenValid(): void
     {
         $filter = new ParentDeepPathFilter(new ArrayInput([
             'custom' => [
@@ -27,7 +29,7 @@ class ParentDeepPathTest extends BaseTest
         $this->assertSame('value', $filter->test->id);
     }
 
-    public function testChildrenInvalid()
+    public function testChildrenInvalid(): void
     {
         $filter = new ParentDeepPathFilter(new ArrayInput([]), $this->getMapper());
 
