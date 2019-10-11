@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Spiral Framework.
  *
@@ -94,18 +95,30 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     /**
      * {@inheritdoc}
      */
-    public function setField(string $name, $value, bool $filter = true)
+    public function __unset($offset): void
     {
-        parent::setField($name, $value, $filter);
+        parent::__unset($offset);
         $this->reset();
+    }
+
+    /**
+     * @return array
+     */
+    public function __debugInfo()
+    {
+        return [
+            'valid'  => $this->isValid(),
+            'fields' => $this->getFields(),
+            'errors' => $this->getErrors()
+        ];
     }
 
     /**
      * {@inheritdoc}
      */
-    public function __unset($offset)
+    public function setField(string $name, $value, bool $filter = true): void
     {
-        parent::__unset($offset);
+        parent::setField($name, $value, $filter);
         $this->reset();
     }
 
@@ -127,21 +140,9 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     /**
      * Force re-validation.
      */
-    public function reset()
+    public function reset(): void
     {
         $this->errors = null;
-    }
-
-    /**
-     * @return array
-     */
-    public function __debugInfo()
-    {
-        return [
-            'valid'  => $this->isValid(),
-            'fields' => $this->getFields(),
-            'errors' => $this->getErrors()
-        ];
     }
 
     /**

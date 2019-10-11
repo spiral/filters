@@ -1,23 +1,24 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests\Fixtures;
-
 
 use Spiral\Filters\Filter;
 
 class ExternalFilter extends Filter
 {
-    const SCHEMA = [
+    public const SCHEMA = [
         'key' => 'key'
     ];
 
-    const VALIDATES = [
+    public const VALIDATES = [
         'id' => ['notEmpty']
     ];
 }

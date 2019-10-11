@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
@@ -18,13 +20,13 @@ use Spiral\Models\Reflection\ReflectionEntity;
 
 class SchemasTest extends BaseTest
 {
-    public function testSchemas()
+    public function testSchemas(): void
     {
         $schema = $this->getMapper()->getSchema(TestFilter::class);
         $this->assertNotEmpty($schema);
     }
 
-    public function testSchemasAfterReset()
+    public function testSchemasAfterReset(): void
     {
         $mapper = $this->getMapper();
         $schema = $mapper->getSchema(TestFilter::class);
@@ -34,12 +36,12 @@ class SchemasTest extends BaseTest
     /**
      * @expectedException \Spiral\Filters\Exception\SchemaException
      */
-    public function testUndefinedSchema()
+    public function testUndefinedSchema(): void
     {
         $this->getMapper()->getSchema('undefined');
     }
 
-    public function testCustomBuilder()
+    public function testCustomBuilder(): void
     {
         $mapper = $this->getMapper();
         $schema = $mapper->getSchema(TestFilter::class);
@@ -55,7 +57,7 @@ class SchemasTest extends BaseTest
     /**
      * @expectedException \Spiral\Filters\Exception\SchemaException
      */
-    public function testEmptySchema()
+    public function testEmptySchema(): void
     {
         $builder = new SchemaBuilder(new ReflectionEntity(EmptyFilter::class));
         $builder->makeSchema();
@@ -65,7 +67,7 @@ class SchemasTest extends BaseTest
      * @expectedException \Spiral\Filters\Exception\SchemaException
      * @expectedExceptionMessageRegExp /id/
      */
-    public function testBrokenFilter()
+    public function testBrokenFilter(): void
     {
         $builder = new SchemaBuilder(new ReflectionEntity(BrokenFilter::class));
         $builder->makeSchema();

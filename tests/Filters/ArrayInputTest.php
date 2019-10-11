@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
@@ -13,14 +15,14 @@ use Spiral\Filters\ArrayInput;
 
 class ArrayInputTest extends TestCase
 {
-    public function testGetValue()
+    public function testGetValue(): void
     {
         $arr = new ArrayInput(['key' => 'value']);
         $this->assertSame('value', $arr->getValue('', 'key'));
         $this->assertSame(null, $arr->getValue('', 'other'));
     }
 
-    public function testGetValueNested()
+    public function testGetValueNested(): void
     {
         $arr = new ArrayInput(['key' => ['a' => 'b']]);
         $this->assertSame('b', $arr->getValue('', 'key.a'));
@@ -28,7 +30,7 @@ class ArrayInputTest extends TestCase
         $this->assertSame(null, $arr->getValue('', 'key.a.d'));
     }
 
-    public function testSliced()
+    public function testSliced(): void
     {
         $arr = new ArrayInput(['key' => ['a' => 'b']]);
         $this->assertSame('b', $arr->getValue('', 'key.a'));
@@ -38,7 +40,7 @@ class ArrayInputTest extends TestCase
         $this->assertSame('b', $arr2->getValue('', 'a'));
     }
 
-    public function testSlicedOverwrite()
+    public function testSlicedOverwrite(): void
     {
         $arr = new ArrayInput(['key' => ['a' => ['x' => 'y']]]);
         $this->assertSame('y', $arr->getValue('', 'key.a.x'));
@@ -54,7 +56,7 @@ class ArrayInputTest extends TestCase
         $this->assertSame('y', $arr4->getValue('', 'a.x'));
     }
 
-    public function testGetSlice()
+    public function testGetSlice(): void
     {
         $arr = new ArrayInput(['key' => ['a' => ['x' => 'y']]]);
         $this->assertSame(['key' => ['a' => ['x' => 'y']]], $arr->getValue('', ''));

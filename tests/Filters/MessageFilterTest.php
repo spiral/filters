@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
@@ -13,7 +15,7 @@ use Spiral\Filters\Tests\Fixtures\MessageFilter;
 
 class MessageFilterTest extends BaseTest
 {
-    public function testValid()
+    public function testValid(): void
     {
         $filter = new MessageFilter(new ArrayInput([
             'id' => 'value'
@@ -22,7 +24,7 @@ class MessageFilterTest extends BaseTest
         $this->assertTrue($filter->isValid());
     }
 
-    public function testInvalid()
+    public function testInvalid(): void
     {
         $filter = new MessageFilter(new ArrayInput([
             'key' => 'value'

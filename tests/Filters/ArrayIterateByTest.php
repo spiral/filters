@@ -1,10 +1,12 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
@@ -13,7 +15,7 @@ use Spiral\Filters\Tests\Fixtures\ArrayIterateByFilter;
 
 class ArrayIterateByTest extends BaseTest
 {
-    public function testValid()
+    public function testValid(): void
     {
         $filter = new ArrayIterateByFilter(new ArrayInput([
             'tests' => [
@@ -29,7 +31,7 @@ class ArrayIterateByTest extends BaseTest
         $this->assertSame('value2', $filter->tests[1]->id);
     }
 
-    public function testInvalid()
+    public function testInvalid(): void
     {
         $filter = new ArrayIterateByFilter(new ArrayInput([
             'tests' => [
@@ -57,7 +59,7 @@ class ArrayIterateByTest extends BaseTest
         ], $filter->getErrors());
     }
 
-    public function testEmptyValid()
+    public function testEmptyValid(): void
     {
         $filter = new ArrayIterateByFilter(new ArrayInput([]), $this->getMapper());
         $this->assertTrue($filter->isValid());

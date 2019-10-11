@@ -1,20 +1,21 @@
 <?php
+
 /**
  * Spiral Framework.
  *
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
-
 
 use Spiral\Filters\ArrayInput;
 use Spiral\Filters\Tests\Fixtures\ArrayIterateByPathFilter;
 
 class ArrayIterateByPathFilterTest extends BaseTest
 {
-    public function testValid()
+    public function testValid(): void
     {
         $filter = new ArrayIterateByPathFilter(new ArrayInput([
             'custom' => [
@@ -30,7 +31,7 @@ class ArrayIterateByPathFilterTest extends BaseTest
         $this->assertSame('value2', $filter->tests[1]->id);
     }
 
-    public function testExcludeElement()
+    public function testExcludeElement(): void
     {
         $filter = new ArrayIterateByPathFilter(new ArrayInput([
             'custom' => [
@@ -46,7 +47,7 @@ class ArrayIterateByPathFilterTest extends BaseTest
         $this->assertFalse(isset($filter->tests[1]));
     }
 
-    public function testInvalid()
+    public function testInvalid(): void
     {
         $filter = new ArrayIterateByPathFilter(new ArrayInput([
             'custom' => [
@@ -74,7 +75,7 @@ class ArrayIterateByPathFilterTest extends BaseTest
         ], $filter->getErrors());
     }
 
-    public function testEmptyValid()
+    public function testEmptyValid(): void
     {
         $filter = new ArrayIterateByPathFilter(new ArrayInput([]), $this->getMapper());
         $this->assertTrue($filter->isValid());
