@@ -6,6 +6,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters;
@@ -49,11 +50,14 @@ final class SchemaBuilder
     public function makeSchema(): array
     {
         return [
-            Filter::SH_MAP       => $this->buildMap($this->entity),
-            Filter::SH_VALIDATES => $this->entity->getProperty('validates', true) ?? [],
-            Filter::SH_SECURED   => $this->entity->getSecured(),
-            Filter::SH_FILLABLE  => $this->entity->getFillable(),
-            Filter::SH_MUTATORS  => $this->entity->getMutators(),
+            // mapping and validation schema
+            FilterProvider::MAPPING   => $this->buildMap($this->entity),
+            FilterProvider::VALIDATES => $this->entity->getProperty('validates', true) ?? [],
+
+            // entity schema
+            Filter::SH_SECURED        => $this->entity->getSecured(),
+            Filter::SH_FILLABLE       => $this->entity->getFillable(),
+            Filter::SH_MUTATORS       => $this->entity->getMutators(),
         ];
     }
 
@@ -65,39 +69,41 @@ final class SchemaBuilder
     {
         $schema = $filter->getProperty('schema', true);
         if (empty($schema)) {
-            throw new SchemaException("Filter `{$filter->getName()}` does not define any schema.");
+            throw new SchemaException("Filter `{$filter->getName()}` does not define any schema");
         }
 
         $result = [];
         foreach ($schema as $field => $definition) {
-            //Short definition
+            // short definition
             if (is_string($definition)) {
-                //Simple scalar field definition
+                // simple scalar field definition
                 if (!class_exists($definition)) {
                     list($source, $origin) = $this->parseDefinition($filter, $field, $definition);
                     $result[$field] = [
-                        FilterMapper::SOURCE => $source,
-                        FilterMapper::ORIGIN => $origin
+                        FilterProvider::SOURCE => $source,
+                        FilterProvider::ORIGIN => $origin
                     ];
                     continue;
                 }
 
-                //Singular nested model
+                // singular nested model
                 $result[$field] = [
-                    FilterMapper::SOURCE => null,
-                    FilterMapper::ORIGIN => $field,
-                    FilterMapper::FILTER => $definition,
-                    FilterMapper::ARRAY  => false
+                    FilterProvider::SOURCE => null,
+                    FilterProvider::ORIGIN => $field,
+                    FilterProvider::FILTER => $definition,
+                    FilterProvider::ARRAY  => false
                 ];
 
                 continue;
             }
 
             if (!is_array($definition) || count($definition) == 0) {
-                throw new SchemaException("Invalid schema definition at `{$filter->getName()}`->`{$field}`.");
+                throw new SchemaException(
+                    "Invalid schema definition at `{$filter->getName()}`->`{$field}`"
+                );
             }
 
-            //Complex definition
+            // complex definition
             if (!empty($definition[self::ORIGIN])) {
                 $origin = $definition[self::ORIGIN];
 
@@ -109,12 +115,12 @@ final class SchemaBuilder
                 $iterate = true;
             }
 
-            //Array of models (default isolation prefix)
+            // array of models (default isolation prefix)
             $map = [
-                FilterMapper::FILTER => $definition[self::NESTED],
-                FilterMapper::SOURCE => null,
-                FilterMapper::ORIGIN => $origin,
-                FilterMapper::ARRAY  => $iterate
+                FilterProvider::FILTER => $definition[self::NESTED],
+                FilterProvider::SOURCE => null,
+                FilterProvider::ORIGIN => $origin,
+                FilterProvider::ARRAY  => $iterate
             ];
 
             if ($iterate) {
@@ -124,8 +130,8 @@ final class SchemaBuilder
                     $definition[self::ITERATE] ?? $origin
                 );
 
-                $map[FilterMapper::ITERATE_SOURCE] = $source;
-                $map[FilterMapper::ITERATE_ORIGIN] = $origin;
+                $map[FilterProvider::ITERATE_SOURCE] = $source;
+                $map[FilterProvider::ITERATE_ORIGIN] = $origin;
             }
 
             $result[$field] = $map;
@@ -146,13 +152,13 @@ final class SchemaBuilder
      *
      * @return array [$source, $origin]
      */
-    private function parseDefinition(
-        ReflectionEntity $filter,
-        string $field,
-        string $definition
-    ): array {
+    private function parseDefinition(ReflectionEntity $filter, string $field, string $definition): array
+    {
         if (strpos($definition, ':') === false) {
-            return [$filter->getProperty('default_source', true), $definition ?? $field];
+            return [
+                $filter->getProperty('default_source', true),
+                $definition ?? $field
+            ];
         }
 
         return explode(':', $definition);

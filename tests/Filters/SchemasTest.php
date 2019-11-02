@@ -6,52 +6,25 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
+use Spiral\Filters\ArrayInput;
 use Spiral\Filters\SchemaBuilder;
-use Spiral\Filters\Tests\Fixtures\ExternalFilter;
-use Spiral\Filters\Tests\Fixtures\ParentFilter;
-use Spiral\Filters\Tests\Fixtures\TestFilter;
 use Spiral\Filters\Tests\UserDefined\BrokenFilter;
 use Spiral\Filters\Tests\UserDefined\EmptyFilter;
 use Spiral\Models\Reflection\ReflectionEntity;
 
 class SchemasTest extends BaseTest
 {
-    public function testSchemas(): void
-    {
-        $schema = $this->getMapper()->getSchema(TestFilter::class);
-        $this->assertNotEmpty($schema);
-    }
-
-    public function testSchemasAfterReset(): void
-    {
-        $mapper = $this->getMapper();
-        $schema = $mapper->getSchema(TestFilter::class);
-        $this->assertNotEmpty($schema);
-    }
-
     /**
      * @expectedException \Spiral\Filters\Exception\SchemaException
      */
     public function testUndefinedSchema(): void
     {
-        $this->getMapper()->getSchema('undefined');
-    }
-
-    public function testCustomBuilder(): void
-    {
-        $mapper = $this->getMapper();
-        $schema = $mapper->getSchema(TestFilter::class);
-        $this->assertNotEmpty($schema);
-
-        $mapper->register(ParentFilter::class);
-        $mapper->register(TestFilter::class);
-
-        $schema = $mapper->getSchema(TestFilter::class);
-        $this->assertNotEmpty($schema);
+        $this->getProvider()->createFilter('undefined', new ArrayInput());
     }
 
     /**

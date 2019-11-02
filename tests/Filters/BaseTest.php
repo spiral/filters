@@ -6,18 +6,14 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
 
 use PHPUnit\Framework\TestCase;
 use Spiral\Core\Container;
-use Spiral\Core\NullMemory;
-use Spiral\Filters\FilterMapper;
-use Spiral\Filters\LocatorInterface;
-use Spiral\Filters\MapperInterface;
-use Spiral\Tokenizer\ClassesInterface;
-use Spiral\Tokenizer\ClassLocator;
+use Spiral\Filters\FilterProvider;
 use Spiral\Validation\Checker\AddressChecker;
 use Spiral\Validation\Checker\FileChecker;
 use Spiral\Validation\Checker\ImageChecker;
@@ -32,11 +28,6 @@ use Spiral\Validation\ValidationProvider;
 
 abstract class BaseTest extends TestCase
 {
-    public const TOKENIZER_CONFIG = [
-        'directories' => [__DIR__ . '/Fixtures/'],
-        'exclude'     => ['User'],
-    ];
-
     public const VALIDATION_CONFIG = [
         'checkers' => [
             'file'    => FileChecker::class,
@@ -51,19 +42,16 @@ abstract class BaseTest extends TestCase
             'url'      => 'address::url',
         ],
     ];
+
     protected $container;
 
     public function setUp(): void
     {
         $this->container = new Container();
 
-        $this->container->bindSingleton(ClassesInterface::class, ClassLocator::class);
-
         $this->container->bindSingleton(ValidationInterface::class, ValidationProvider::class);
         $this->container->bindSingleton(RulesInterface::class, ValidationProvider::class);
         $this->container->bindSingleton(ParserInterface::class, RuleParser::class);
-
-        $this->container->bindSingleton(MapperInterface::class, FilterMapper::class);
 
         $this->container->bind(
             ValidatorConfig::class,
@@ -71,8 +59,8 @@ abstract class BaseTest extends TestCase
         );
     }
 
-    protected function getMapper(): FilterMapper
+    protected function getProvider(): FilterProvider
     {
-        return new FilterMapper($this->container->get(ValidationInterface::class));
+        return new FilterProvider($this->container->get(ValidationInterface::class));
     }
 }

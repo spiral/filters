@@ -6,6 +6,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
@@ -17,12 +18,12 @@ class ArrayTest extends BaseTest
 {
     public function testValid(): void
     {
-        $filter = new ArrayFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ArrayFilter::class, new ArrayInput([
             'tests' => [
                 ['id' => 'value'],
                 ['id' => 'value2'],
             ]
-        ]), $this->getMapper());
+        ]));
 
         $this->assertTrue($filter->isValid());
 
@@ -32,12 +33,12 @@ class ArrayTest extends BaseTest
 
     public function testInvalid(): void
     {
-        $filter = new ArrayFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ArrayFilter::class, new ArrayInput([
             'tests' => [
                 0 => ['id' => 'value'],
                 1 => ['id' => null],
             ]
-        ]), $this->getMapper());
+        ]));
 
         $this->assertFalse($filter->isValid());
 
@@ -55,7 +56,7 @@ class ArrayTest extends BaseTest
 
     public function testEmptyValid(): void
     {
-        $filter = new ArrayFilter(new ArrayInput([]), $this->getMapper());
+        $filter = $this->getProvider()->createFilter(ArrayFilter::class, new ArrayInput([]));
         $this->assertTrue($filter->isValid());
     }
 }

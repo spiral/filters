@@ -6,6 +6,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
@@ -17,9 +18,9 @@ class FilterTest extends BaseTest
 {
     public function testValid(): void
     {
-        $filter = new TestFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(TestFilter::class, new ArrayInput([
             'id' => 'value'
-        ]), $this->getMapper());
+        ]));
 
         $this->assertTrue($filter->isValid());
         $this->assertSame('value', $filter->id);
@@ -27,9 +28,9 @@ class FilterTest extends BaseTest
 
     public function testInvalid(): void
     {
-        $filter = new TestFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(TestFilter::class, new ArrayInput([
             'key' => 'value'
-        ]), $this->getMapper());
+        ]));
 
         $this->assertFalse($filter->isValid());
 
@@ -40,9 +41,9 @@ class FilterTest extends BaseTest
 
     public function testContext(): void
     {
-        $filter = new TestFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(TestFilter::class, new ArrayInput([
             'id' => 'value'
-        ]), $this->getMapper());
+        ]));
 
         $this->assertSame(null, $filter->getContext());
         $this->assertTrue($filter->isValid());
@@ -58,9 +59,9 @@ class FilterTest extends BaseTest
 
     public function testSetRevalidate(): void
     {
-        $filter = new TestFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(TestFilter::class, new ArrayInput([
             'id' => 'value'
-        ]), $this->getMapper());
+        ]));
 
         $this->assertTrue($filter->isValid());
         $filter->id = null;
@@ -69,9 +70,9 @@ class FilterTest extends BaseTest
 
     public function testUnsetRevalidate(): void
     {
-        $filter = new TestFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(TestFilter::class, new ArrayInput([
             'id' => 'value'
-        ]), $this->getMapper());
+        ]));
 
         $this->assertTrue($filter->isValid());
         unset($filter->id);
@@ -80,9 +81,9 @@ class FilterTest extends BaseTest
 
     public function testDebugInfo(): void
     {
-        $filter = new TestFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(TestFilter::class, new ArrayInput([
             'id' => 'value'
-        ]), $this->getMapper());
+        ]));
 
         $info = $filter->__debugInfo();
 

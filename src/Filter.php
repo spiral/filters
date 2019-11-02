@@ -6,17 +6,19 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters;
 
-use Spiral\Core\Traits\SaturateTrait;
 use Spiral\Filters\Traits\ValidateTrait;
 use Spiral\Models\SchematicEntity;
+use Spiral\Translator\Traits\TranslatorTrait;
+use Spiral\Translator\Translator;
 use Spiral\Validation\ValidatorInterface;
 
 /**
- * Request filter is data entity which uses input manager to populate it's fields, model can
+ * Filter is data entity which uses input manager to populate it's fields, model can
  * perform input filtering, value routing (query, data, files) and validation.
  *
  * Attention, you can not inherit one request from another at this moment. You can use generic
@@ -55,41 +57,41 @@ use Spiral\Validation\ValidatorInterface;
  */
 abstract class Filter extends SchematicEntity implements FilterInterface
 {
-    use SaturateTrait;
-    use ValidateTrait {
-        getErrors as fetchErrors;
-    }
+    use TranslatorTrait;
 
     // Default input source when nothing else is specified.
     public const DEFAULT_SOURCE = 'data';
-
-    // Filter specific schema segments
-    public const SH_MAP       = 0;
-    public const SH_VALIDATES = 1;
 
     // Defines request data mapping (input => request property)
     public const SCHEMA    = [];
     public const VALIDATES = [];
 
-    /** @var MapperInterface */
-    private $mapper;
-
     /** @var array|null */
     private $errors = null;
 
-    /**
-     * @param InputInterface|null  $input
-     * @param MapperInterface|null $mapper Scope based saturation.
-     */
-    public function __construct(InputInterface $input = null, MapperInterface $mapper = null)
-    {
-        // get filter from global IoC scope if none provided
-        $this->mapper = $this->saturate($mapper, MapperInterface::class);
-        parent::__construct([], $mapper->getSchema(get_class($this)));
+    /** @var ValidatorInterface @internal */
+    private $validator;
 
-        if (!empty($input)) {
-            $this->mapper->initValues($this, $input);
-        }
+    /** @var ErrorMapper */
+    private $errorMapper;
+
+    /**
+     * Filter constructor.
+     *
+     * @param array              $data
+     * @param array              $schema
+     * @param ValidatorInterface $validator
+     * @param ErrorMapper        $errorMapper
+     */
+    public function __construct(
+        array $data,
+        array $schema,
+        ValidatorInterface $validator,
+        ErrorMapper $errorMapper
+    ) {
+        parent::__construct($data, $schema);
+        $this->validator = $validator;
+        $this->errorMapper = $errorMapper;
     }
 
     /**
@@ -114,12 +116,38 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     }
 
     /**
+     * @inheritdoc
+     */
+    public function setContext($context): void
+    {
+        $this->validator = $this->validator->withContext($context);
+        $this->reset();
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getContext()
+    {
+        return $this->validator->getContext();
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function setField(string $name, $value, bool $filter = true): void
     {
         parent::setField($name, $value, $filter);
         $this->reset();
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    public function isValid(): bool
+    {
+        return $this->getErrors() === [];
     }
 
     /**
@@ -130,11 +158,21 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     public function getErrors(): array
     {
         if ($this->errors === null) {
-            $this->errors = $this->fetchErrors();
+            $this->errors = [];
+            foreach ($this->validator->withData($this)->getErrors() as $field => $error) {
+                if (is_string($error) && Translator::isMessage($error)) {
+                    // translate error message
+                    $error = $this->say($error);
+                }
+
+                $this->errors[$field] = $error;
+            }
         }
 
-        //Making sure that each error point to proper input origin
-        return $this->mapper->mapErrors($this, $this->validateNested($this->errors));
+        $this->errors = $this->validateNested($this->errors);
+
+        // make sure that each error point to proper input origin
+        return $this->errorMapper->mapErrors($this->errors);
     }
 
     /**
@@ -146,23 +184,13 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     }
 
     /**
-     * Validate entity.
-     *
-     * @return ValidatorInterface
-     */
-    protected function validate(): ValidatorInterface
-    {
-        return $this->mapper->validate($this, $this->context);
-    }
-
-    /**
      * Validate inner entities.
      *
      * @param array $errors
      *
      * @return array
      */
-    private function validateNested(array $errors): array
+    protected function validateNested(array $errors): array
     {
         foreach ($this->getFields(false) as $index => $value) {
             if (isset($errors[$index])) {

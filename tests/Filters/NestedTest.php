@@ -6,6 +6,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
@@ -17,11 +18,11 @@ class NestedTest extends BaseTest
 {
     public function testChildrenValid(): void
     {
-        $filter = new ParentFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ParentFilter::class, new ArrayInput([
             'test' => [
                 'id' => 'value'
             ]
-        ]), $this->getMapper());
+        ]));
 
         $this->assertTrue($filter->isValid());
         $this->assertSame('value', $filter->test->id);
@@ -29,7 +30,7 @@ class NestedTest extends BaseTest
 
     public function testChildrenInvalid(): void
     {
-        $filter = new ParentFilter(new ArrayInput([]), $this->getMapper());
+        $filter = $this->getProvider()->createFilter(ParentFilter::class, new ArrayInput([]));
 
         $this->assertFalse($filter->isValid());
         $this->assertSame([

@@ -6,6 +6,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
@@ -17,13 +18,13 @@ class ArrayIterateByTest extends BaseTest
 {
     public function testValid(): void
     {
-        $filter = new ArrayIterateByFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ArrayIterateByFilter::class, new ArrayInput([
             'tests' => [
                 ['id' => 'value'],
                 ['id' => 'value2'],
             ],
             'by'    => [1, 2]
-        ]), $this->getMapper());
+        ]));
 
         $this->assertTrue($filter->isValid());
 
@@ -33,13 +34,13 @@ class ArrayIterateByTest extends BaseTest
 
     public function testInvalid(): void
     {
-        $filter = new ArrayIterateByFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ArrayIterateByFilter::class, new ArrayInput([
             'tests' => [
                 'a' => ['id' => 'value'],
                 'b' => ['id' => null],
             ],
             'by'    => ['a' => 1, 'b' => 2, 'c' => 3]
-        ]), $this->getMapper());
+        ]));
 
         $this->assertFalse($filter->isValid());
 
@@ -61,7 +62,7 @@ class ArrayIterateByTest extends BaseTest
 
     public function testEmptyValid(): void
     {
-        $filter = new ArrayIterateByFilter(new ArrayInput([]), $this->getMapper());
+        $filter = $this->getProvider()->createFilter(ArrayIterateByFilter::class, new ArrayInput([]));
         $this->assertTrue($filter->isValid());
     }
 }

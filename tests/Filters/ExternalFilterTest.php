@@ -6,6 +6,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
@@ -18,9 +19,9 @@ class ExternalFilterTest extends BaseTest
 {
     public function testExternalValidation(): void
     {
-        $filter = new ExternalFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ExternalFilter::class, new ArrayInput([
             'id' => 'value'
-        ]), $this->getMapper());
+        ]));
 
         $this->assertFalse($filter->isValid());
         $filter->id = 'value';
@@ -31,10 +32,9 @@ class ExternalFilterTest extends BaseTest
 
     public function testInvalid(): void
     {
-        $filter = new ExternalFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ExternalFilter::class, new ArrayInput([
             'key' => 'value'
-        ]), $this->getMapper());
-
+        ]));
         $this->assertFalse($filter->isValid());
 
         $this->assertSame([

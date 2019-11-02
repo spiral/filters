@@ -6,6 +6,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters;
@@ -26,7 +27,7 @@ final class ArrayInput implements InputInterface
     /**
      * @param array $data
      */
-    public function __construct(array $data)
+    public function __construct(array $data = [])
     {
         $this->data = $data;
     }

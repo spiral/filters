@@ -6,13 +6,12 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters;
 
-use Spiral\Models\EntityInterface;
-
-interface FilterInterface extends EntityInterface
+interface FilterInterface
 {
     /**
      * @return bool
@@ -25,14 +24,14 @@ interface FilterInterface extends EntityInterface
     public function getErrors(): array;
 
     /**
-     * Associate context with the filter (available in validator).
+     * Associate the context with the filter.
      *
      * @param mixed $context
      */
     public function setContext($context);
 
     /**
-     * Associate context with the filter (available in validator).
+     * Return currently associated context.
      *
      * @return mixed
      */

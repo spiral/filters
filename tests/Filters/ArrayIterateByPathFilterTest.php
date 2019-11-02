@@ -6,6 +6,7 @@
  * @license   MIT
  * @author    Anton Titov (Wolfy-J)
  */
+
 declare(strict_types=1);
 
 namespace Spiral\Filters\Tests;
@@ -17,13 +18,13 @@ class ArrayIterateByPathFilterTest extends BaseTest
 {
     public function testValid(): void
     {
-        $filter = new ArrayIterateByPathFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ArrayIterateByPathFilter::class, new ArrayInput([
             'custom' => [
                 0 => ['id' => 'value'],
                 1 => ['id' => 'value2'],
             ],
             'by'     => [0 => 'value', 1 => 'value']
-        ]), $this->getMapper());
+        ]));
 
         $this->assertTrue($filter->isValid());
 
@@ -33,13 +34,13 @@ class ArrayIterateByPathFilterTest extends BaseTest
 
     public function testExcludeElement(): void
     {
-        $filter = new ArrayIterateByPathFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ArrayIterateByPathFilter::class, new ArrayInput([
             'custom' => [
                 0 => ['id' => 'value'],
                 1 => ['id' => 'value2'],
             ],
             'by'     => [0 => 'value']
-        ]), $this->getMapper());
+        ]));
 
         $this->assertTrue($filter->isValid());
 
@@ -49,7 +50,7 @@ class ArrayIterateByPathFilterTest extends BaseTest
 
     public function testInvalid(): void
     {
-        $filter = new ArrayIterateByPathFilter(new ArrayInput([
+        $filter = $this->getProvider()->createFilter(ArrayIterateByPathFilter::class, new ArrayInput([
             'custom' => [
                 'a' => ['id' => 'value'],
                 'b' => ['id' => null],
@@ -59,7 +60,7 @@ class ArrayIterateByPathFilterTest extends BaseTest
                 'b' => 2,
                 'c' => 3
             ]
-        ]), $this->getMapper());
+        ]));
 
         $this->assertFalse($filter->isValid());
 
@@ -77,7 +78,7 @@ class ArrayIterateByPathFilterTest extends BaseTest
 
     public function testEmptyValid(): void
     {
-        $filter = new ArrayIterateByPathFilter(new ArrayInput([]), $this->getMapper());
+        $filter = $this->getProvider()->createFilter(ArrayIterateByPathFilter::class, new ArrayInput([]));
         $this->assertTrue($filter->isValid());
     }
 }
