@@ -22,6 +22,6 @@ class MappingTest extends BaseTest
     public function testInvalidPath(): void
     {
         $filter = $this->getProvider()->createFilter(InvalidFilter::class, new ArrayInput([]));
-        dump($filter);
+        $filter->isValid();
     }
 }
