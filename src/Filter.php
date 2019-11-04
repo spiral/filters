@@ -11,6 +11,7 @@ declare(strict_types=1);
 
 namespace Spiral\Filters;
 
+use Spiral\Filters\Exception\FilterException;
 use Spiral\Filters\Traits\ValidateTrait;
 use Spiral\Models\SchematicEntity;
 use Spiral\Translator\Traits\TranslatorTrait;
@@ -61,6 +62,9 @@ abstract class Filter extends SchematicEntity implements FilterInterface
 
     // Default input source when nothing else is specified.
     public const DEFAULT_SOURCE = 'data';
+
+    // Declares what context type the filter can accept
+    public const CONTEXT_TYPE = null;
 
     // Defines request data mapping (input => request property)
     public const SCHEMA    = [];
@@ -120,6 +124,23 @@ abstract class Filter extends SchematicEntity implements FilterInterface
      */
     public function setContext($context): void
     {
+        if (
+            static::CONTEXT_TYPE !== null
+            && (
+                !is_object($context)
+                || (
+                    !is_a($context, static::CONTEXT_TYPE)
+                    && !in_array(static::CONTEXT_TYPE, class_implements(gettype($context)))
+                )
+            )
+        ) {
+            throw new FilterException(sprintf(
+                'Only context of type `%s` is allowed, `%s` given',
+                static::CONTEXT_TYPE,
+                is_object($context) ? get_class($context) : gettype($context)
+            ));
+        }
+
         $this->validator = $this->validator->withContext($context);
         $this->reset();
     }
