@@ -64,7 +64,7 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     public const DEFAULT_SOURCE = 'data';
 
     // Declares what context type the filter can accept
-    public const CONTEXT_TYPE = null;
+    public const CONTEXT_CLASS = null;
 
     // Defines request data mapping (input => request property)
     public const SCHEMA    = [];
@@ -125,18 +125,18 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     public function setContext($context): void
     {
         if (
-            static::CONTEXT_TYPE !== null
+            static::CONTEXT_CLASS !== null
             && (
                 !is_object($context)
                 || (
-                    !is_a($context, static::CONTEXT_TYPE)
-                    && !in_array(static::CONTEXT_TYPE, class_implements(gettype($context)))
+                    !is_a($context, static::CONTEXT_CLASS)
+                    && !in_array(static::CONTEXT_CLASS, class_implements(gettype($context)))
                 )
             )
         ) {
             throw new FilterException(sprintf(
                 'Only context of type `%s` is allowed, `%s` given',
-                static::CONTEXT_TYPE,
+                static::CONTEXT_CLASS,
                 is_object($context) ? get_class($context) : gettype($context)
             ));
         }
