@@ -58,12 +58,11 @@ abstract class Filter extends SchematicEntity implements FilterInterface
 {
     use TranslatorTrait;
 
-    // Default input source when nothing else is specified.
-    public const DEFAULT_SOURCE = 'data';
-
     // Defines request data mapping (input => request property)
-    public const SCHEMA    = [];
-    public const VALIDATES = [];
+    protected const SCHEMA    = [];
+    protected const VALIDATES = [];
+    protected const SETTERS   = [];
+    protected const GETTERS   = [];
 
     /** @var array|null */
     private $errors = null;

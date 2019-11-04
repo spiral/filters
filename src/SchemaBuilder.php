@@ -12,6 +12,7 @@ declare(strict_types=1);
 namespace Spiral\Filters;
 
 use Spiral\Filters\Exception\SchemaException;
+use Spiral\Models\ModelSchema;
 use Spiral\Models\Reflection\ReflectionEntity;
 
 final class SchemaBuilder
@@ -55,9 +56,9 @@ final class SchemaBuilder
             FilterProvider::VALIDATES => $this->entity->getProperty('validates', true) ?? [],
 
             // entity schema
-            Filter::SH_SECURED        => $this->entity->getSecured(),
-            Filter::SH_FILLABLE       => $this->entity->getFillable(),
-            Filter::SH_MUTATORS       => $this->entity->getMutators(),
+            ModelSchema::SECURED      => $this->entity->getSecured(),
+            ModelSchema::FILLABLE     => $this->entity->getFillable(),
+            ModelSchema::MUTATORS     => $this->entity->getMutators(),
         ];
     }
 
@@ -155,10 +156,7 @@ final class SchemaBuilder
     private function parseDefinition(ReflectionEntity $filter, string $field, string $definition): array
     {
         if (strpos($definition, ':') === false) {
-            return [
-                $filter->getProperty('default_source', true),
-                $definition ?? $field
-            ];
+            return ['data', $definition ?? $field];
         }
 
         return explode(':', $definition);
