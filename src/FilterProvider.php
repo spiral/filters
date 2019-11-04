@@ -19,7 +19,7 @@ use Spiral\Validation\ValidatorInterface;
 /**
  * Create filters based on their schema definition.
  */
-final class FilterProvider implements FilteProviderInterface
+final class FilterProvider implements FilterProviderInterface
 {
     // Filter specific schema segments
     public const MAPPING   = 'mapping';

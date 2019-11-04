@@ -16,7 +16,7 @@ use Spiral\Filters\Exception\FilterException;
 /**
  * Creates filters on demand based on a given name and input.
  */
-interface FilteProviderInterface
+interface FilterProviderInterface
 {
     /**
      * @param string         $name
