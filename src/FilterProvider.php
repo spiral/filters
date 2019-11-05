@@ -61,12 +61,11 @@ final class FilterProvider implements FilterProviderInterface
     {
         $schema = $this->getSchema($filter);
 
-        return new $filter(
-            $this->initValues($schema[self::MAPPING], $input),
-            $schema,
-            $this->getValidator($filter),
-            $this->getErrorMapper($filter)
-        );
+        /** @var Filter $instance */
+        $instance = new $filter([], $schema, $this->getValidator($filter), $this->getErrorMapper($filter));
+        $instance->setValue($this->initValues($schema[self::MAPPING], $input));
+
+        return $instance;
     }
 
     /**
