@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Spiral\Filters;
 
+use Spiral\Core\Container;
+use Spiral\Core\FactoryInterface;
 use Spiral\Filters\Exception\SchemaException;
 use Spiral\Models\Reflection\ReflectionEntity;
 use Spiral\Validation\ValidationInterface;
@@ -45,12 +47,17 @@ final class FilterProvider implements FilterProviderInterface
     /** @var ValidationInterface */
     private $validation;
 
+    /** @var FactoryInterface */
+    private $factory;
+
     /**
-     * @param ValidationInterface $validation
+     * @param ValidationInterface   $validation
+     * @param FactoryInterface|null $factory
      */
-    public function __construct(ValidationInterface $validation)
+    public function __construct(ValidationInterface $validation, FactoryInterface $factory = null)
     {
         $this->validation = $validation;
+        $this->factory = $factory ?? new Container();
         $this->cache = [];
     }
 
@@ -62,7 +69,13 @@ final class FilterProvider implements FilterProviderInterface
         $schema = $this->getSchema($filter);
 
         /** @var Filter $instance */
-        $instance = new $filter([], $schema, $this->getValidator($filter), $this->getErrorMapper($filter));
+        $instance = $this->factory->make($filter, [
+            'data'        => [],
+            'schema'      => $schema,
+            'validator'   => $this->getValidator($filter),
+            'errorMapper' => $this->getErrorMapper($filter)
+        ]);
+
         $instance->setValue($this->initValues($schema[self::MAPPING], $input));
 
         return $instance;
