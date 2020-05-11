@@ -45,7 +45,7 @@ class FilterTest extends BaseTest
             'id' => 'value'
         ]));
 
-        $this->assertSame(null, $filter->getContext());
+        $this->assertNull($filter->getContext());
         $this->assertTrue($filter->isValid());
 
         $filter->setContext('value');
@@ -53,7 +53,7 @@ class FilterTest extends BaseTest
         $this->assertTrue($filter->isValid());
 
         $filter->setContext(null);
-        $this->assertSame(null, $filter->getContext());
+        $this->assertNull($filter->getContext());
         $this->assertTrue($filter->isValid());
     }
 

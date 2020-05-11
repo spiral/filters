@@ -79,7 +79,7 @@ final class SchemaBuilder
             if (is_string($definition)) {
                 // simple scalar field definition
                 if (!class_exists($definition)) {
-                    list($source, $origin) = $this->parseDefinition($filter, $field, $definition);
+                    [$source, $origin] = $this->parseDefinition($filter, $field, $definition);
                     $result[$field] = [
                         FilterProvider::SOURCE => $source,
                         FilterProvider::ORIGIN => $origin
@@ -98,7 +98,7 @@ final class SchemaBuilder
                 continue;
             }
 
-            if (!is_array($definition) || count($definition) == 0) {
+            if (!is_array($definition) || count($definition) === 0) {
                 throw new SchemaException(
                     "Invalid schema definition at `{$filter->getName()}`->`{$field}`"
                 );
@@ -125,7 +125,7 @@ final class SchemaBuilder
             ];
 
             if ($iterate) {
-                list($source, $origin) = $this->parseDefinition(
+                [$source, $origin] = $this->parseDefinition(
                     $filter,
                     $field,
                     $definition[self::ITERATE] ?? $origin

@@ -43,7 +43,7 @@ class ValidateArrayTest extends BaseTest
         $this->assertFalse($filter->isValid());
 
         $this->assertSame('value', $filter->tests[0]->id);
-        $this->assertSame(null, $filter->tests[1]->id);
+        $this->assertNull($filter->tests[1]->id);
 
         $this->assertSame([
             'tests' => [

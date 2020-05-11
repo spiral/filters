@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Spiral\Filters\Exception;
 
-class InputException extends \RuntimeException
+use RuntimeException;
+
+class InputException extends RuntimeException
 {
 }
