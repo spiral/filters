@@ -19,7 +19,7 @@ use Spiral\Filters\Exception\DotNotFoundException;
 final class ArrayInput implements InputInterface
 {
     /** @var array */
-    private $data = [];
+    private $data;
 
     /** @var string */
     private $prefix = '';

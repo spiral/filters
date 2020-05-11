@@ -11,6 +11,8 @@ declare(strict_types=1);
 
 namespace Spiral\Filters;
 
+use Generator;
+use ReflectionException;
 use Spiral\Core\Container;
 use Spiral\Core\FactoryInterface;
 use Spiral\Filters\Exception\SchemaException;
@@ -32,8 +34,8 @@ final class FilterProvider implements FilterProviderInterface
     public const ORIGIN         = 'origin';
     public const FILTER         = 'filter';
     public const ARRAY          = 'array';
-    public const ITERATE_SOURCE = 'iterate_srouce';
-    public const ITERATE_ORIGIN = 'iterage_origin';
+    public const ITERATE_SOURCE = 'iterate_source';
+    public const ITERATE_ORIGIN = 'iterate_origin';
 
     /** @var array */
     private $cache;
@@ -82,7 +84,9 @@ final class FilterProvider implements FilterProviderInterface
     }
 
     /**
-     * @inheritdoc
+     * @param array          $mappingSchema
+     * @param InputInterface $input
+     * @return array
      */
     public function initValues(array $mappingSchema, InputInterface $input): array
     {
@@ -122,9 +126,9 @@ final class FilterProvider implements FilterProviderInterface
      *
      * @param array          $schema
      * @param InputInterface $input
-     * @return \Generator
+     * @return Generator
      */
-    private function iterate(array $schema, InputInterface $input): \Generator
+    private function iterate(array $schema, InputInterface $input): Generator
     {
         $values = $input->getValue($schema[self::ITERATE_SOURCE], $schema[self::ITERATE_ORIGIN]);
         if (empty($values) || !is_array($values)) {
@@ -187,7 +191,7 @@ final class FilterProvider implements FilterProviderInterface
             }
 
             $builder = new SchemaBuilder(new ReflectionEntity($filter));
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new SchemaException('Invalid filter schema', $e->getCode(), $e);
         }
 

@@ -65,7 +65,7 @@ abstract class Filter extends SchematicEntity implements FilterInterface
     protected const GETTERS   = [];
 
     /** @var array|null */
-    private $errors = null;
+    private $errors;
 
     /** @var ValidatorInterface @internal */
     private $validator;
@@ -202,7 +202,7 @@ abstract class Filter extends SchematicEntity implements FilterInterface
             }
 
             //Array of nested entities for validation
-            if (is_array($value) || $value instanceof \Traversable) {
+            if (is_iterable($value)) {
                 foreach ($value as $nIndex => $nValue) {
                     if ($nValue instanceof FilterInterface && !$nValue->isValid()) {
                         $errors[$index][$nIndex] = $nValue->getErrors();

@@ -30,7 +30,8 @@ final class ErrorMapper
     }
 
     /**
-     * @inheritdoc
+     * @param array $errors
+     * @return array
      */
     public function mapErrors(array $errors): array
     {
@@ -59,7 +60,7 @@ final class ErrorMapper
      */
     private function mount(array &$array, string $path, $message): void
     {
-        if ($path == '.') {
+        if ($path === '.') {
             throw new SchemaException(
                 "Unable to mount error `{$message}` to `{$path}` (root path is forbidden)"
             );

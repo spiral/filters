@@ -65,8 +65,8 @@ class ArrayIterateByPathFilterTest extends BaseTest
         $this->assertFalse($filter->isValid());
 
         $this->assertSame('value', $filter->tests['a']->id);
-        $this->assertSame(null, $filter->tests['b']->id);
-        $this->assertSame(null, $filter->tests['c']->id);
+        $this->assertNull($filter->tests['b']->id);
+        $this->assertNull($filter->tests['c']->id);
 
         $this->assertSame([
             'custom' => [

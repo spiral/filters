@@ -20,15 +20,15 @@ class ArrayInputTest extends TestCase
     {
         $arr = new ArrayInput(['key' => 'value']);
         $this->assertSame('value', $arr->getValue('', 'key'));
-        $this->assertSame(null, $arr->getValue('', 'other'));
+        $this->assertNull($arr->getValue('', 'other'));
     }
 
     public function testGetValueNested(): void
     {
         $arr = new ArrayInput(['key' => ['a' => 'b']]);
         $this->assertSame('b', $arr->getValue('', 'key.a'));
-        $this->assertSame(null, $arr->getValue('', 'key.c'));
-        $this->assertSame(null, $arr->getValue('', 'key.a.d'));
+        $this->assertNull($arr->getValue('', 'key.c'));
+        $this->assertNull($arr->getValue('', 'key.a.d'));
     }
 
     public function testSliced(): void
