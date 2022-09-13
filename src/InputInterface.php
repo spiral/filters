@@ -1,12 +1,5 @@
 <?php
 
-/**
- * Spiral Framework.
- *
- * @license   MIT
- * @author    Anton Titov (Wolfy-J)
- */
-
 declare(strict_types=1);
 
 namespace Spiral\Filters;
@@ -34,9 +27,12 @@ interface InputInterface
     /**
      * Get input value based on it's source and name.
      *
-     * @return mixed
-     *
      * @throws InputException
      */
-    public function getValue(string $source, string $name = null);
+    public function getValue(string $source, string $name = null): mixed;
+
+    /**
+     * Returns true if the parameter name exists in the source, otherwise returns false.
+     */
+    public function hasValue(string $source, string $name): bool;
 }
