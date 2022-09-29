@@ -13,10 +13,6 @@ final class ErrorMapper
     ) {
     }
 
-    /**
-     * @param array<string, string> $errors
-     * @return array<string, string>
-     */
     public function mapErrors(array $errors): array
     {
         // De-mapping
