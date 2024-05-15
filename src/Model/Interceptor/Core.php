@@ -7,13 +7,11 @@ namespace Spiral\Filters\Model\Interceptor;
 use Spiral\Core\CoreInterface;
 use Spiral\Filters\Model\FilterBag;
 use Spiral\Filters\Model\FilterInterface;
-use Spiral\Interceptors\Context\CallContext;
-use Spiral\Interceptors\HandlerInterface;
 
 /**
  * @psalm-type TParameters = array{filterBag: FilterBag}
  */
-final class Core implements CoreInterface, HandlerInterface
+final class Core implements CoreInterface
 {
     /**
      * @param-assert TParameters $parameters
@@ -23,13 +21,5 @@ final class Core implements CoreInterface, HandlerInterface
         \assert($parameters['filterBag'] instanceof FilterBag);
 
         return $parameters['filterBag']->filter;
-    }
-
-    public function handle(CallContext $context): FilterInterface
-    {
-        $args = $context->getArguments();
-        \assert($args['filterBag'] instanceof FilterBag);
-
-        return $args['filterBag']->filter;
     }
 }
