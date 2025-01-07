@@ -32,36 +32,36 @@ final class InputScopeTest extends BaseTestCase
     public function testGetValue(): void
     {
         $input = $this->getInput();
-        self::assertSame('value', $input->getValue('data', 'foo'));
-        self::assertNull($input->getValue('data', 'bar.empty'));
+        $this->assertSame('value', $input->getValue('data', 'foo'));
+        $this->assertNull($input->getValue('data', 'bar.empty'));
     }
 
     public function testGetValueWithNonExistingKey(): void
     {
         $input = $this->getInput();
-        self::assertNull($input->getValue('data', 'invalid_key'));
+        $this->assertNull($input->getValue('data', 'invalid_key'));
     }
 
     public function testHasValue(): void
     {
         $input = $this->getInput();
-        self::assertFalse($input->hasValue('data', 'invalid_key'));
-        self::assertTrue($input->hasValue('data', 'foo'));
-        self::assertTrue($input->hasValue('data', 'bar'));
+        $this->assertFalse($input->hasValue('data', 'invalid_key'));
+        $this->assertTrue($input->hasValue('data', 'foo'));
+        $this->assertTrue($input->hasValue('data', 'bar'));
     }
 
     public function testHasValueNested(): void
     {
         $input = $this->getInput();
 
-        self::assertTrue($input->hasValue('data', 'bar.empty'));
-        self::assertFalse($input->hasValue('data', 'bar.empty.invalid_key'));
+        $this->assertTrue($input->hasValue('data', 'bar.empty'));
+        $this->assertFalse($input->hasValue('data', 'bar.empty.invalid_key'));
     }
 
     public function testHasValueWithNonExistingSource(): void
     {
         $input = $this->getInput();
-        self::assertFalse($input->hasValue('query', 'foo'));
+        $this->assertFalse($input->hasValue('query', 'foo'));
     }
 
     private function getInput(): InputInterface

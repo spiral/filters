@@ -44,7 +44,7 @@ final class ValidateFilterInterceptorTest extends BaseTestCase
         $core = m::mock(CoreInterface::class);
         $core->shouldReceive('callAction')->once()->andReturn($filter = m::mock(FilterInterface::class));
 
-        self::assertSame($filter, $this->interceptor->process('foo', 'bar', [
+        $this->assertSame($filter, $this->interceptor->process('foo', 'bar', [
             'filterBag' => new FilterBag($filter, m::mock(AbstractEntity::class), [], [])
         ], $core));
     }
@@ -58,7 +58,7 @@ final class ValidateFilterInterceptorTest extends BaseTestCase
 
         $filter->shouldReceive('filterDefinition')->once()->andReturn(m::mock(FilterDefinitionInterface::class));
 
-        self::assertSame($filter, $this->interceptor->process('foo', 'bar', [
+        $this->assertSame($filter, $this->interceptor->process('foo', 'bar', [
             'filterBag' => new FilterBag($filter, m::mock(AbstractEntity::class), [], [])
         ], $core));
     }
@@ -86,7 +86,7 @@ final class ValidateFilterInterceptorTest extends BaseTestCase
 
         $validator->shouldReceive('isValid')->once()->andReturnTrue();
 
-        self::assertSame($filter, $this->interceptor->process('foo', 'bar', [
+        $this->assertSame($filter, $this->interceptor->process('foo', 'bar', [
             'filterBag' => $bag,
             'context' => 'context-data'
         ], $core));

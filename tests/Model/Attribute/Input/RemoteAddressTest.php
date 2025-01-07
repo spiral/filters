@@ -18,13 +18,19 @@ final class RemoteAddressTest extends \Spiral\Tests\Filters\Model\AttributeTestC
             ->with('remoteAddress')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchema(): void
     {
         $attribute = new RemoteAddress();
 
-        self::assertSame('remoteAddress', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'remoteAddress',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

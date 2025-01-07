@@ -26,7 +26,10 @@ final class NestedArrayTest extends \Spiral\Tests\Filters\Model\AttributeTestCas
             ->with($this->input, $property)
             ->andReturn('bak');
 
-        self::assertSame('bak', $attribute->getValue($this->input, $property));
+        $this->assertSame(
+            'bak',
+            $attribute->getValue($this->input, $property)
+        );
     }
 
     public function testGetsSchemaWithPrefix(): void
@@ -37,7 +40,10 @@ final class NestedArrayTest extends \Spiral\Tests\Filters\Model\AttributeTestCas
             'baz'
         );
 
-        self::assertSame(['foo', 'baz'], $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            ['foo', 'baz'],
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 
     public function testGetsSchemaWithoutPrefix(): void
@@ -47,6 +53,9 @@ final class NestedArrayTest extends \Spiral\Tests\Filters\Model\AttributeTestCas
             m::mock(AbstractInput::class)
         );
 
-        self::assertSame(['foo'], $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            ['foo'],
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

@@ -18,14 +18,20 @@ final class CookieTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('cookie', 'foo')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForDefinedKey(): void
     {
         $attribute = new Cookie('foo');
 
-        self::assertSame('cookie:foo', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'cookie:foo',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 
     public function testGetsValueForNotDefinedKey(): void
@@ -38,13 +44,19 @@ final class CookieTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('cookie', 'baz')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForNotDefinedKey(): void
     {
         $attribute = new Cookie();
 
-        self::assertSame('cookie:baz', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'cookie:baz',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

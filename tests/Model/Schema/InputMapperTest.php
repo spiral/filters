@@ -105,7 +105,7 @@ final class InputMapperTest extends BaseTestCase
             $input
         );
 
-        self::assertSame([
+        $this->assertSame([
             'id' => 'id-value',
             'username' => 'username-value',
             'nested' => $nestedFilter,
@@ -118,7 +118,7 @@ final class InputMapperTest extends BaseTestCase
                 'first' => $nestedFilter3,
             ],
         ], $data);
-        self::assertSame([
+        $this->assertSame([
             'nested_error' => [
                 'nested_error_field' => 'Error',
             ],

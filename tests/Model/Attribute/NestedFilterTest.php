@@ -15,7 +15,10 @@ final class NestedFilterTest extends \Spiral\Tests\Filters\Model\AttributeTestCa
             'baz'
         );
 
-        self::assertSame(['foo', 'baz'], $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            ['foo', 'baz'],
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 
     public function testGetsSchemaWithoutPrefix(): void
@@ -24,6 +27,9 @@ final class NestedFilterTest extends \Spiral\Tests\Filters\Model\AttributeTestCa
             'foo'
         );
 
-        self::assertSame('foo', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'foo',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }
