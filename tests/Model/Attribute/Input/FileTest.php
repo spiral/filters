@@ -20,14 +20,20 @@ final class FileTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('file', 'foo')
             ->andReturn($file = m::mock(UploadedFileInterface::class));
 
-        self::assertSame($file, $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            $file,
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForDefinedKey(): void
     {
         $attribute = new File('foo');
 
-        self::assertSame('file:foo', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'file:foo',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 
     public function testGetsValueForNotDefinedKey(): void
@@ -40,13 +46,19 @@ final class FileTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('file', 'baz')
             ->andReturn($file = m::mock(UploadedFileInterface::class));
 
-        self::assertSame($file, $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            $file,
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForNotDefinedKey(): void
     {
         $attribute = new File();
 
-        self::assertSame('file:baz', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'file:baz',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

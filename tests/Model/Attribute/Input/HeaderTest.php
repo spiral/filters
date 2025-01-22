@@ -18,14 +18,20 @@ final class HeaderTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('header', 'foo')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForDefinedKey(): void
     {
         $attribute = new Header('foo');
 
-        self::assertSame('header:foo', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'header:foo',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 
     public function testGetsValueForNotDefinedKey(): void
@@ -38,13 +44,19 @@ final class HeaderTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('header', 'baz')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForNotDefinedKey(): void
     {
         $attribute = new Header();
 
-        self::assertSame('header:baz', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'header:baz',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

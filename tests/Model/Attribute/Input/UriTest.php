@@ -20,13 +20,19 @@ final class UriTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('uri')
             ->andReturn($uri = m::mock(UriInterface::class));
 
-        self::assertSame($uri, $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            $uri,
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchema(): void
     {
         $attribute = new Uri();
 
-        self::assertSame('uri', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'uri',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

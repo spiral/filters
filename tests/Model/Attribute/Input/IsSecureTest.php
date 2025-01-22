@@ -18,13 +18,18 @@ final class IsSecureTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('isSecure')
             ->andReturnTrue();
 
-        self::assertTrue($attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertTrue(
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchema(): void
     {
         $attribute = new IsSecure();
 
-        self::assertSame('isSecure', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'isSecure',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

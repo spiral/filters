@@ -13,7 +13,7 @@ final class BuilderTest extends BaseTestCase
 {
     private Builder $builder;
 
-    protected function setUp(): void
+    public function setUp(): void
     {
         parent::setUp();
         $this->builder = new Builder();
@@ -31,7 +31,7 @@ final class BuilderTest extends BaseTestCase
             'nested4' => [NestedFilter::class, 'query:foo.*']
         ]);
 
-        self::assertSame([
+        $this->assertSame([
             'id' => [
                 Builder::SCHEMA_SOURCE => 'data',
                 Builder::SCHEMA_ORIGIN => 'id',

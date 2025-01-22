@@ -12,6 +12,9 @@ final class SetterTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
     {
         $attribute = new Setter('md5');
 
-        self::assertSame('acbd18db4cc2f85cedef654fccc4a4d8', $attribute->updateValue('foo'));
+        $this->assertSame(
+            'acbd18db4cc2f85cedef654fccc4a4d8',
+            $attribute->updateValue('foo')
+        );
     }
 }
