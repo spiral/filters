@@ -29,17 +29,6 @@ final class AttributeMapperTest extends BaseTestCase
     private m\LegacyMockInterface|m\MockInterface|FilterProviderInterface $provider;
     private AttributeMapper $mapper;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->mapper = new AttributeMapper(
-            $this->provider = m::mock(FilterProviderInterface::class),
-            new AttributeReader(),
-            new Mapper(new CasterRegistry([new UuidCaster(), new EnumCaster()]))
-        );
-    }
-
     public function testInputAttribute(): void
     {
         $input = m::mock(InputInterface::class);
@@ -113,25 +102,25 @@ final class AttributeMapperTest extends BaseTestCase
                     return $this->wsPath;
                 }
             },
-            $input
+            $input,
         );
 
-        $this->assertSame('john_smith', $filter->username);
-        $this->assertSame('john', $filter->name);
-        $this->assertSame('smith', $filter->lastName);
-        $this->assertSame(10, $filter->page);
-        $this->assertSame('bearer:token', $filter->token);
-        $this->assertSame('/foo/bar', $filter->getWsPath());
-        $this->assertSame('google', $filter->utmSource);
-        $this->assertSame('abc.123', $filter->utmId);
-        $this->assertSame($fooFilter, $filter->fooFilter);
-        $this->assertSame($barFilter, $filter->barFilter);
-        $this->assertSame([
+        self::assertSame('john_smith', $filter->username);
+        self::assertSame('john', $filter->name);
+        self::assertSame('smith', $filter->lastName);
+        self::assertSame(10, $filter->page);
+        self::assertSame('bearer:token', $filter->token);
+        self::assertSame('/foo/bar', $filter->getWsPath());
+        self::assertSame('google', $filter->utmSource);
+        self::assertSame('abc.123', $filter->utmId);
+        self::assertSame($fooFilter, $filter->fooFilter);
+        self::assertSame($barFilter, $filter->barFilter);
+        self::assertSame([
             'first' => $bazFilterFirst,
             'second' => $bazFilterSecond,
         ], $filter->bazFilter);
 
-        $this->assertSame([
+        self::assertSame([
             'username' => 'post:username',
             'name' => 'post:first_name',
             'lastName' => 'query:lastName',
@@ -145,7 +134,7 @@ final class AttributeMapperTest extends BaseTestCase
             'bazFilter' => ['bazFilter', 'bazFilter.*'],
         ], $schema);
 
-        $this->assertSame([], $errors);
+        self::assertSame([], $errors);
     }
 
     public function testNestedFiltersValidationError(): void
@@ -180,18 +169,18 @@ final class AttributeMapperTest extends BaseTestCase
                 #[NestedArray(class: 'bazFilter', input: new Post(), prefix: 'baz')]
                 public array $bazFilter;
             },
-            $input
+            $input,
         );
 
-        $this->assertSame([
+        self::assertSame([
             'username' => 'post:username',
             'fooFilter' => 'fooFilter',
             'bazFilter' => ['bazFilter', 'baz.*'],
         ], $schema);
 
-        $this->assertSame([
+        self::assertSame([
             'fooFilter' => [
-                'fooFilter' => 'Error'
+                'fooFilter' => 'Error',
             ],
             'bazFilter' => [
                 'second' => [
@@ -199,5 +188,16 @@ final class AttributeMapperTest extends BaseTestCase
                 ],
             ],
         ], $errors);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->mapper = new AttributeMapper(
+            $this->provider = m::mock(FilterProviderInterface::class),
+            new AttributeReader(),
+            new Mapper(new CasterRegistry([new UuidCaster(), new EnumCaster()])),
+        );
     }
 }

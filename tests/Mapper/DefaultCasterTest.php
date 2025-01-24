@@ -13,7 +13,7 @@ final class DefaultCasterTest extends TestCase
 {
     public function testSupports(): void
     {
-        $this->assertTrue((new DefaultCaster())->supports($this->createMock(\ReflectionNamedType::class)));
+        self::assertTrue((new DefaultCaster())->supports($this->createMock(\ReflectionNamedType::class)));
     }
 
     public function testSetValue(): void
@@ -23,7 +23,7 @@ final class DefaultCasterTest extends TestCase
         $property = new \ReflectionProperty($filter, 'city');
 
         $setter->setValue($filter, $property, 'foo');
-        $this->assertSame('foo', $property->getValue($filter));
+        self::assertSame('foo', $property->getValue($filter));
     }
 
     public function testSetValueException(): void
@@ -36,7 +36,7 @@ final class DefaultCasterTest extends TestCase
         $this->expectExceptionMessage(\sprintf(
             'Unable to set value. Cannot assign %s to property %s::$city of type string',
             \stdClass::class,
-            AddressFilter::class
+            AddressFilter::class,
         ));
         $setter->setValue($filter, $property, new \stdClass());
     }

@@ -19,15 +19,6 @@ final class InputMapperTest extends BaseTestCase
     private m\LegacyMockInterface|m\MockInterface|FilterProviderInterface $provider;
     private InputMapper $mapper;
 
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->mapper = new InputMapper(
-            $this->provider = m::mock(FilterProviderInterface::class)
-        );
-    }
-
     public function testMapSchema(): void
     {
         $input = m::mock(InputInterface::class);
@@ -64,7 +55,7 @@ final class InputMapperTest extends BaseTestCase
 
         // nested2
         $input->shouldReceive('getValue')->once()->with('data', 'nested2')->andReturn(
-            ['first' => 'foo', 'second' => 'foo']
+            ['first' => 'foo', 'second' => 'foo'],
         );
 
         $nestedInput2 = m::mock(InputInterface::class);
@@ -77,7 +68,7 @@ final class InputMapperTest extends BaseTestCase
 
         // nested3
         $input->shouldReceive('getValue')->once()->with('data', 'foo')->andReturn(
-            ['first' => 'foo', 'second' => 'foo']
+            ['first' => 'foo', 'second' => 'foo'],
         );
 
         $nestedInput3 = m::mock(InputInterface::class);
@@ -102,10 +93,10 @@ final class InputMapperTest extends BaseTestCase
                 'nested2' => [NestedFilter::class],
                 'nested3' => [NestedFilter::class, 'foo.*'],
             ]),
-            $input
+            $input,
         );
 
-        $this->assertSame([
+        self::assertSame([
             'id' => 'id-value',
             'username' => 'username-value',
             'nested' => $nestedFilter,
@@ -118,7 +109,7 @@ final class InputMapperTest extends BaseTestCase
                 'first' => $nestedFilter3,
             ],
         ], $data);
-        $this->assertSame([
+        self::assertSame([
             'nested_error' => [
                 'nested_error_field' => 'Error',
             ],
@@ -128,5 +119,14 @@ final class InputMapperTest extends BaseTestCase
                 ],
             ],
         ], $errors);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->mapper = new InputMapper(
+            $this->provider = m::mock(FilterProviderInterface::class),
+        );
     }
 }

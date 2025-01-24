@@ -12,24 +12,18 @@ final class NestedFilterTest extends \Spiral\Tests\Filters\Model\AttributeTestCa
     {
         $attribute = new NestedFilter(
             'foo',
-            'baz'
+            'baz',
         );
 
-        $this->assertSame(
-            ['foo', 'baz'],
-            $attribute->getSchema($this->makeProperty())
-        );
+        self::assertSame(['foo', 'baz'], $attribute->getSchema($this->makeProperty()));
     }
 
     public function testGetsSchemaWithoutPrefix(): void
     {
         $attribute = new NestedFilter(
-            'foo'
+            'foo',
         );
 
-        $this->assertSame(
-            'foo',
-            $attribute->getSchema($this->makeProperty())
-        );
+        self::assertSame('foo', $attribute->getSchema($this->makeProperty()));
     }
 }
