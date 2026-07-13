@@ -18,14 +18,20 @@ final class RouteTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('attribute', 'matches.foo')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForDefinedKey(): void
     {
         $attribute = new Route('foo');
 
-        self::assertSame('attribute:matches.foo', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'attribute:matches.foo',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 
     public function testGetsValueForNotDefinedKey(): void
@@ -38,13 +44,19 @@ final class RouteTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('attribute', 'matches.baz')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForNotDefinedKey(): void
     {
         $attribute = new Route();
 
-        self::assertSame('attribute:matches.baz', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'attribute:matches.baz',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

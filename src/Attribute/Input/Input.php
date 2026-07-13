@@ -18,7 +18,8 @@ final class Input extends AbstractInput
      */
     public function __construct(
         public readonly ?string $key = null,
-    ) {}
+    ) {
+    }
 
     /**
      * @see \Spiral\Http\Request\InputManager::input() from {@link https://github.com/spiral/http}

@@ -18,13 +18,19 @@ final class MethodTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('method')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchema(): void
     {
         $attribute = new Method();
 
-        self::assertSame('method', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'method',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

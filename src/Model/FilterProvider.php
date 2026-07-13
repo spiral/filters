@@ -11,9 +11,6 @@ use Spiral\Filters\Model\Schema\AttributeMapper;
 use Spiral\Filters\Model\Schema\Builder;
 use Spiral\Filters\Model\Schema\InputMapper;
 use Spiral\Filters\InputInterface;
-use Spiral\Interceptors\Context\CallContext;
-use Spiral\Interceptors\Context\Target;
-use Spiral\Interceptors\HandlerInterface;
 use Spiral\Models\SchematicEntity;
 
 /**
@@ -22,14 +19,11 @@ use Spiral\Models\SchematicEntity;
  */
 final class FilterProvider implements FilterProviderInterface
 {
-    private readonly bool $isLegacy;
-
     public function __construct(
         private readonly ContainerInterface $container,
         private readonly ResolverInterface $resolver,
-        private readonly HandlerInterface|CoreInterface $core,
+        private readonly CoreInterface $core
     ) {
-        $this->isLegacy = !$core instanceof HandlerInterface;
     }
 
     public function createFilter(string $name, InputInterface $input): FilterInterface
@@ -43,7 +37,7 @@ final class FilterProvider implements FilterProviderInterface
         if ($filter instanceof HasFilterDefinition) {
             $mappingSchema = \array_merge(
                 $mappingSchema,
-                $filter->filterDefinition()->mappingSchema(),
+                $filter->filterDefinition()->mappingSchema()
             );
         }
 
@@ -62,12 +56,9 @@ final class FilterProvider implements FilterProviderInterface
         $errors = \array_merge($errors, $inputErrors);
 
         $entity = new SchematicEntity($data, $schema);
-        $args = [
+        return $this->core->callAction($name, 'handle', [
             'filterBag' => new FilterBag($filter, $entity, $schema, $errors),
-        ];
-        return $this->isLegacy
-            ? $this->core->callAction($name, 'handle', $args)
-            : $this->core->handle(new CallContext(Target::fromPair($name, 'handle'), $args));
+        ]);
     }
 
     private function createFilterInstance(string $name): FilterInterface

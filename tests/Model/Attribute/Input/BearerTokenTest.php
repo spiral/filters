@@ -18,13 +18,19 @@ final class BearerTokenTest extends \Spiral\Tests\Filters\Model\AttributeTestCas
             ->with('bearerToken')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchema(): void
     {
         $attribute = new BearerToken();
 
-        self::assertSame('bearerToken', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'bearerToken',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

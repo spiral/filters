@@ -4,4 +4,8 @@ declare(strict_types=1);
 
 namespace Spiral\Filters\Exception;
 
-class FilterException extends \RuntimeException {}
+use RuntimeException;
+
+class FilterException extends RuntimeException
+{
+}

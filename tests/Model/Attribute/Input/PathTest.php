@@ -18,13 +18,19 @@ final class PathTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('path')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchema(): void
     {
         $attribute = new Path();
 
-        self::assertSame('path', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'path',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

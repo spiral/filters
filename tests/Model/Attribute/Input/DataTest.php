@@ -18,14 +18,20 @@ final class DataTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('data', 'foo')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForDefinedKey(): void
     {
         $attribute = new Data('foo');
 
-        self::assertSame('data:foo', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'data:foo',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 
     public function testGetsValueForNotDefinedKey(): void
@@ -38,13 +44,19 @@ final class DataTest extends \Spiral\Tests\Filters\Model\AttributeTestCase
             ->with('data', 'baz')
             ->andReturn('bar');
 
-        self::assertSame('bar', $attribute->getValue($this->input, $this->makeProperty()));
+        $this->assertSame(
+            'bar',
+            $attribute->getValue($this->input, $this->makeProperty())
+        );
     }
 
     public function testGetsSchemaForNotDefinedKey(): void
     {
         $attribute = new Data();
 
-        self::assertSame('data:baz', $attribute->getSchema($this->makeProperty()));
+        $this->assertSame(
+            'data:baz',
+            $attribute->getSchema($this->makeProperty())
+        );
     }
 }

@@ -19,7 +19,8 @@ class File extends AbstractInput
      */
     public function __construct(
         public readonly ?string $key = null,
-    ) {}
+    ) {
+    }
 
     /**
      * @see \Spiral\Http\Request\InputManager::file() from {@link https://github.com/spiral/http}
