@@ -13,37 +13,37 @@ use Spiral\Tests\Filters\Fixtures\UserFilter;
 
 final class EnumCasterTest extends TestCase
 {
-    #[DataProvider('supportsDataProvider')]
-    public function testSupports(\ReflectionProperty $ref, bool $expected): void
-    {
-        $this->assertSame($expected, (new EnumCaster())->supports($ref->getType()));
-    }
-
-    public function testSetValue(): void
-    {
-        $setter = new EnumCaster();
-        $filter = $this->createMock(UserFilter::class);
-        $property = new \ReflectionProperty($filter, 'status');
-
-        $setter->setValue($filter, $property, 'active');
-        $this->assertEquals(Status::Active, $property->getValue($filter));
-    }
-
-    public function testSetValueException(): void
-    {
-        $setter = new EnumCaster();
-        $filter = $this->createMock(UserFilter::class);
-        $property = new \ReflectionProperty($filter, 'status');
-
-        $this->expectException(SetterException::class);
-        $setter->setValue($filter, $property, 'foo');
-    }
-
     public static function supportsDataProvider(): \Traversable
     {
         $ref = new \ReflectionClass(UserFilter::class);
 
         yield 'enum' => [$ref->getProperty('status'), true];
         yield 'uuid' => [$ref->getProperty('groupUuid'), false];
+    }
+
+    #[DataProvider('supportsDataProvider')]
+    public function testSupports(\ReflectionProperty $ref, bool $expected): void
+    {
+        self::assertSame($expected, (new EnumCaster())->supports($ref->getType()));
+    }
+
+    public function testSetValue(): void
+    {
+        $setter = new EnumCaster();
+        $filter = $this->createStub(UserFilter::class);
+        $property = new \ReflectionProperty($filter, 'status');
+
+        $setter->setValue($filter, $property, 'active');
+        self::assertEquals(Status::Active, $property->getValue($filter));
+    }
+
+    public function testSetValueException(): void
+    {
+        $setter = new EnumCaster();
+        $filter = $this->createStub(UserFilter::class);
+        $property = new \ReflectionProperty($filter, 'status');
+
+        $this->expectException(SetterException::class);
+        $setter->setValue($filter, $property, 'foo');
     }
 }

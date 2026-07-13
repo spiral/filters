@@ -26,17 +26,6 @@ use Spiral\Tests\Filters\Fixtures\UserFilter;
 
 final class FilterProviderTest extends BaseTestCase
 {
-    public function setUp(): void
-    {
-        parent::setUp();
-
-        $this->container->bindSingleton(ReaderInterface::class, (new Factory())->create());
-        $this->container->bindSingleton(
-            CasterRegistryInterface::class,
-            static fn () => new CasterRegistry([new EnumCaster(), new UuidCaster()])
-        );
-    }
-
     public function testCreateNestedFilterWithIdenticalPropertyNames(): void
     {
         $request = new ServerRequest('POST', '/');
@@ -44,8 +33,8 @@ final class FilterProviderTest extends BaseTestCase
             'name' => 'John',
             'address' => [
                 'address' => 'Some street',
-                'city' => 'Portland'
-            ]
+                'city' => 'Portland',
+            ],
         ]);
         $this->container->bind(ServerRequestInterface::class, $request);
 
@@ -60,16 +49,16 @@ final class FilterProviderTest extends BaseTestCase
         /** @var SomeFilter $filter */
         $filter = $provider->createFilter(SomeFilter::class, $input);
 
-        $this->assertSame('John', $filter->name);
-        $this->assertSame('Some street', $filter->address->address);
-        $this->assertSame('Portland', $filter->address->city);
+        self::assertSame('John', $filter->name);
+        self::assertSame('Some street', $filter->address->address);
+        self::assertSame('Portland', $filter->address->city);
     }
 
     public function testCreateFilterWithInputAttribute(): void
     {
         $request = new ServerRequest('GET', '/');
         $request = $request->withQueryParams([
-            'token' => 'some'
+            'token' => 'some',
         ]);
         $this->container->bind(ServerRequestInterface::class, $request);
 
@@ -84,7 +73,7 @@ final class FilterProviderTest extends BaseTestCase
         /** @var LogoutFilter $filter */
         $filter = $provider->createFilter(LogoutFilter::class, $input);
 
-        $this->assertSame('some', $filter->token);
+        self::assertSame('some', $filter->token);
     }
 
     public function testCreateFilterWithEnumAndUuid(): void
@@ -110,14 +99,25 @@ final class FilterProviderTest extends BaseTestCase
         /** @var UserFilter $filter */
         $filter = $provider->createFilter(UserFilter::class, $input);
 
-        $this->assertSame('John', $filter->name);
-        $this->assertInstanceOf(Status::class, $filter->status);
-        $this->assertEquals(Status::Active, $filter->status);
-        $this->assertInstanceOf(Status::class, $filter->activationStatus);
-        $this->assertEquals(Status::Inactive, $filter->activationStatus);
-        $this->assertInstanceOf(UuidInterface::class, $filter->groupUuid);
-        $this->assertSame('f0a0b2c0-5b4b-4a5c-8d3e-6f7a8f9b0c1d', $filter->groupUuid->toString());
-        $this->assertInstanceOf(UuidInterface::class, $filter->friendUuid);
-        $this->assertSame('f0a0b2c0-5b4b-4a5c-8d3e-6f7a8f9b0c2d', $filter->friendUuid->toString());
+        self::assertSame('John', $filter->name);
+        self::assertInstanceOf(Status::class, $filter->status);
+        self::assertSame(Status::Active, $filter->status);
+        self::assertInstanceOf(Status::class, $filter->activationStatus);
+        self::assertSame(Status::Inactive, $filter->activationStatus);
+        self::assertInstanceOf(UuidInterface::class, $filter->groupUuid);
+        self::assertSame('f0a0b2c0-5b4b-4a5c-8d3e-6f7a8f9b0c1d', $filter->groupUuid->toString());
+        self::assertInstanceOf(UuidInterface::class, $filter->friendUuid);
+        self::assertSame('f0a0b2c0-5b4b-4a5c-8d3e-6f7a8f9b0c2d', $filter->friendUuid->toString());
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->container->bindSingleton(ReaderInterface::class, (new Factory())->create());
+        $this->container->bindSingleton(
+            CasterRegistryInterface::class,
+            static fn(): CasterRegistry => new CasterRegistry([new EnumCaster(), new UuidCaster()]),
+        );
     }
 }
